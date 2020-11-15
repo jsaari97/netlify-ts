@@ -1,0 +1,34 @@
+{
+  "name": "netlify-ts",
+  "version": "0.0.0",
+  "description": "Create TypeScript typings from Netlify CMS content collections",
+  "repository": "jsaari97/netlify-ts",
+  "main": "index.js",
+  "types": "lib/index.d.ts",
+  "author": "Jim Saari",
+  "license": "MIT",
+  "files": [
+    "/bin",
+    "/lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint '*/**/*.{js,ts}' --fix"
+  },
+  "dependencies": {
+    "js-yaml": "^3.14.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^3.12.5",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  }
+}
