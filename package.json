@@ -7,6 +7,9 @@
   "types": "lib/index.d.ts",
   "author": "Jim Saari",
   "license": "MIT",
+  "bin": {
+    "netlify-ts": "./bin/run"
+  },
   "files": [
     "/bin",
     "/lib"
@@ -17,10 +20,12 @@
     "lint": "eslint '*/**/*.{js,ts}' --fix"
   },
   "dependencies": {
-    "js-yaml": "^3.14.0"
+    "js-yaml": "^3.14.0",
+    "yargs": "^16.1.1"
   },
   "devDependencies": {
     "@types/js-yaml": "^3.12.5",
+    "@types/yargs": "^15.0.9",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
     "eslint": "^7.13.0",
