@@ -15,6 +15,7 @@
     "/lib"
   ],
   "scripts": {
+    "prebuild": "rm -rf lib",
     "build": "tsc",
     "test": "jest",
     "lint": "eslint '*/**/*.{js,ts}' --fix"
