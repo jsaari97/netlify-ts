@@ -1,14 +1,24 @@
 import { loadConfiguration } from "./input";
 import { normalizeCollection } from "./normalize";
+import { appendExport, formatType, outputFile } from "./output";
 import { buildType, buildWidget } from "./widgets";
 
 export default async (input: string, output: string): Promise<void> => {
-  const config = await loadConfiguration(input);
-  const collections = config.flatMap(normalizeCollection);
+  try {
+    const config = await loadConfiguration(input);
 
-  const widgets = collections.map(buildWidget);
+    const types = config
+      .flatMap(normalizeCollection)
+      .map(buildWidget)
+      .reduce(buildType(), [[], []])
+      .flat()
+      .map(formatType)
+      .map(appendExport)
+      .join("\n\n")
+      .concat("\n");
 
-  const types = widgets.reduce(buildType(), [[], []]);
-
-  console.dir(types, { depth: null });
+    await outputFile(output, types);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
