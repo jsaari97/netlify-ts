@@ -1,18 +1,18 @@
-import { Collection, SubField } from "./types";
+import { Collection, Field } from "./types";
 
-export const normalizeCollection = (collection: Collection): SubField | SubField[] => {
+export const normalizeCollection = (collection: Collection): Field | Field[] => {
   if (collection.files) {
-    return collection.files.map(normalizeSubField);
+    return collection.files.map(normalizeField);
   }
 
-  return normalizeSubField(collection);
+  return normalizeField(collection);
 };
 
-const normalizeSubField = (field: SubField): SubField => {
+const normalizeField = (field: Field): Field => {
   return {
-    // ...field,
+    ...field,
     name: field.name,
     widget: field.widget,
-    fields: field.fields?.map(normalizeSubField),
+    fields: field.fields?.map(normalizeField),
   };
 };

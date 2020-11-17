@@ -1,19 +1,24 @@
-interface Field {
+interface BaseField {
   name: string;
 }
 
-export interface SubField extends Field {
+export interface Field extends BaseField {
   widget?: string;
-  fields?: SubField[];
+  fields?: Field[];
   [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-export interface FilesField extends Field {
-  files?: SubField[];
+export interface FilesField extends BaseField {
+  files?: Field[];
 }
 
-export interface FolderField extends Field {
-  fields?: SubField[];
+export interface FolderField extends BaseField {
+  fields?: Field[];
 }
 
 export type Collection = FilesField & FolderField;
+
+export interface Widget {
+  name: string;
+  type: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
