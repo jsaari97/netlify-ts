@@ -1,5 +1,6 @@
 import path from "path";
 import { promises as fs } from "fs";
+import { OUTPUT_FILENAME } from "./constants";
 
 const spacing = "  ";
 
@@ -17,7 +18,7 @@ export const outputFile = async (outputPath: string, data: string): Promise<void
     let fullPath = path.join(process.cwd(), outputPath);
 
     if (!path.extname(fullPath)) {
-      fullPath = path.join(fullPath, "/netlify.types.ts");
+      fullPath = path.join(fullPath, OUTPUT_FILENAME);
     }
 
     if (path.dirname(fullPath) !== process.cwd()) {

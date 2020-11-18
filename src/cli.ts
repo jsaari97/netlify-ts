@@ -1,5 +1,6 @@
 import yargs from "yargs";
 import generate from ".";
+import { OUTPUT_FILENAME } from "./constants";
 
 interface CommandArguments {
   input: string;
@@ -11,7 +12,7 @@ const args = yargs
   .demandCommand(2).argv;
 
 export const run = async (): Promise<void> => {
-  const { input, output = "./netlify.types.ts" } = args;
+  const { input, output = OUTPUT_FILENAME } = args;
 
   await generate(input, output);
 };
