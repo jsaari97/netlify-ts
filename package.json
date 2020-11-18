@@ -6,6 +6,12 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Jim Saari",
+  "keywords": [
+    "netlify",
+    "typescript",
+    "types",
+    "generate"
+  ],
   "license": "MIT",
   "bin": "./bin/run",
   "files": [
