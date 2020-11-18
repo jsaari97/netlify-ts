@@ -12,7 +12,7 @@ $ npm install -g netlify-ts
 # Usage
 
 ```bash
-$ netlify-ts public/admin/config.yml
+netlify-ts public/admin/config.yml
 ```
 
 This generates a `netlify-types.ts` file in the project root containing types for your netlify content types.
@@ -22,7 +22,7 @@ This generates a `netlify-types.ts` file in the project root containing types fo
 You can also specify a custom output location by providing a second optional parameter. Omitting the filename outputs a file in the given directory with the default filename.
 
 ```bash
-$ netlify-ts public/admin/config.yml src/my-types.ts
+netlify-ts public/admin/config.yml src/my-types.ts
 ```
 
 # License
