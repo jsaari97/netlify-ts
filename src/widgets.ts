@@ -69,8 +69,10 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
     }
 
     if (typeof iterator[0] === "string") {
-      types[1].push(`type ${widget.name}_options = '${iterator.join("' | '")}';`);
-      types[0].push(`${widget.name}: ${widget.name}_options;`);
+      const name = prefix ? `${prefix}_${widget.name}`: widget.name
+
+      types[1].push(`type ${name}_options = '${iterator.join("' | '")}';`);
+      types[0].push(`${widget.name}: ${name}_options;`);
 
       return types;
     }

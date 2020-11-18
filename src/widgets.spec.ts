@@ -112,9 +112,7 @@ describe("Types", () => {
     expect(
       buildType()([[], []], {
         name: "top",
-        type: [
-          { name: "name", type: "string" },
-        ],
+        type: [{ name: "name", type: "string" }],
       }),
     ).toEqual([[], [`interface top { name: string; }`]]);
   });
@@ -159,5 +157,15 @@ describe("Types", () => {
         type: [["one", "two", "three"]],
       }),
     ).toEqual([["name: name_options;"], [`type name_options = 'one' | 'two' | 'three';`]]);
+
+    expect(
+      buildType("root")([[], []], {
+        name: "name",
+        type: [["one", "two", "three"]],
+      }),
+    ).toEqual([
+      ["name: root_name_options;"],
+      [`type root_name_options = 'one' | 'two' | 'three';`],
+    ]);
   });
 });
