@@ -6,7 +6,7 @@ Create TypeScript typings from Netlify CMS content collections.
 # Installation
 
 ```bash
-$ npm install -g netlify-ts
+npm install -g netlify-ts
 ```
 
 # Usage
