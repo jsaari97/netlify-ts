@@ -1,4 +1,5 @@
 /node_modules
 /lib
 
+netlify-types.ts
 .DS_Store
