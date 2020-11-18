@@ -1,6 +1,15 @@
 import { Field, Widget } from "./types";
 
 export const buildWidget = (field: Field): Widget => {
+  return {
+    name: field.name,
+    required: field.required !== false,
+    type: resolveType(field),
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const resolveType = (field: Field): Widget["type"] => {
   switch (field.widget) {
     case "string":
     case "text":
@@ -9,70 +18,46 @@ export const buildWidget = (field: Field): Widget => {
     case "datetime":
     case "color":
     case "markdown":
-      return {
-        name: field.name,
-        type: "string",
-      };
+      return "string";
     case "number":
-      return {
-        name: field.name,
-        type: field.value_type === "int" || field.value_type === "float" ? "number" : "string",
-      };
+      return field.value_type === "int" || field.value_type === "float" ? "number" : "string";
     case "boolean":
-      return {
-        name: field.name,
-        type: "boolean",
-      };
+      return "boolean";
     case "list":
-      return {
-        name: field.name,
-        type: [(field.fields || []).map(buildWidget)],
-      };
+      return [(field.fields || []).map(buildWidget)];
     case "hidden":
     case "relation":
-      return {
-        name: field.name,
-        type: "any",
-      };
+      return "any";
     case "select":
-      return {
-        name: field.name,
-        type: field.options,
-      };
-    case undefined: {
-      return {
-        name: field.name,
-        type: field.fields?.map(buildWidget),
-      };
-    }
+      return field.options;
+    case undefined:
     default:
-      return {
-        name: field.name,
-        type: field.fields?.map(buildWidget),
-      };
+      return field.fields?.map(buildWidget);
   }
 };
 
 type TypeArray = [string[], string[]];
 
 export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
+  const required = widget.required ? "" : "?";
+
   if (!Array.isArray(widget.type)) {
-    types[0].push(`${widget.name}: ${widget.type};`);
+    types[0].push(`${widget.name}${required}: ${widget.type};`);
   } else {
     const isArray = Array.isArray(widget.type[0]);
     const iterator = isArray ? widget.type[0] : widget.type;
 
     if (!iterator.length) {
-      types[0].push(`${widget.name}: string[];`);
+      types[0].push(`${widget.name}${required}: string[];`);
 
       return types;
     }
 
     if (typeof iterator[0] === "string") {
-      const name = prefix ? `${prefix}_${widget.name}`: widget.name
+      const name = prefix ? `${prefix}_${widget.name}` : widget.name;
 
       types[1].push(`type ${name}_options = '${iterator.join("' | '")}';`);
-      types[0].push(`${widget.name}: ${name}_options;`);
+      types[0].push(`${widget.name}${required}: ${name}_options;`);
 
       return types;
     }
@@ -90,7 +75,7 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
     const [fields, interfaces] = iterator.reduce(buildType(name), [[], []]);
 
     types[1].push(...interfaces, `interface ${name} { ${fields.join(" ")} }`);
-    types[0].push(`${widget.name}: ${name}${isArray ? "[]" : ""};`);
+    types[0].push(`${widget.name}${required}: ${name}${isArray ? "[]" : ""};`);
   }
 
   return types;
