@@ -25,14 +25,15 @@ export const resolveType = (field: Field): Widget["type"] => {
       return "boolean";
     case "list":
       return [(field.fields || []).map(buildWidget)];
-    case "hidden":
-    case "relation":
-      return "any";
     case "select":
       return field.options;
+    case 'object':
     case undefined:
-    default:
       return field.fields?.map(buildWidget);
+    case "hidden":
+    case "relation":
+    default:
+      return "any";
   }
 };
 
