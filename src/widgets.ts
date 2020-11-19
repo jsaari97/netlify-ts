@@ -26,8 +26,11 @@ export const resolveType = (field: Field): Widget["type"] => {
     case "list":
       return [(field.fields || []).map(buildWidget)];
     case "select":
-      return field.options;
-    case 'object':
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return field.options.map((option: any) =>
+        typeof option === "object" ? option.value : option,
+      );
+    case "object":
     case undefined:
       return field.fields?.map(buildWidget);
     case "hidden":

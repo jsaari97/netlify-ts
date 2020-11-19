@@ -67,6 +67,14 @@ describe("Resolve widget type", () => {
     expect(
       resolveType({ name: "name", widget: "select", options: ["one", "two", "three"] }),
     ).toEqual(["one", "two", "three"]);
+
+    expect(
+      resolveType({
+        name: "name",
+        widget: "select",
+        options: [{ value: "one" }, { value: "two" }, { value: "three" }],
+      }),
+    ).toEqual(["one", "two", "three"]);
   });
 
   test("object", () => {
