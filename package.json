@@ -1,6 +1,6 @@
 {
   "name": "netlify-ts",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Create TypeScript typings from Netlify CMS content collections",
   "repository": "jsaari97/netlify-ts",
   "main": "lib/index.js",
