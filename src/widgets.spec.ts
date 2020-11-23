@@ -5,19 +5,31 @@ describe("Build Widget shape", () => {
     name: "name",
     type: "string",
     required: true,
+    multiple: false,
   });
 
   expect(buildWidget({ name: "name", widget: "string", required: false })).toEqual({
     name: "name",
     type: "string",
     required: false,
+    multiple: false,
   });
 
   expect(buildWidget({ name: "name", widget: "string" })).toEqual({
     name: "name",
     type: "string",
     required: true,
+    multiple: false,
   });
+
+  it('should set multiple', () => {
+    expect(buildWidget({ name: "name", widget: "list", fields: [] })).toEqual({
+      name: "name",
+      type: [],
+      required: true,
+      multiple: true,
+    });
+  })
 });
 
 describe("Resolve widget type", () => {
@@ -58,9 +70,9 @@ describe("Resolve widget type", () => {
         widget: "list",
         fields: [{ name: "child", widget: "string" }],
       }),
-    ).toEqual([[{ name: "child", type: "string", required: true }]]);
+    ).toEqual([{ name: "child", type: "string", required: true, multiple: false }]);
 
-    expect(resolveType({ name: "name", widget: "list" })).toEqual([[]]);
+    expect(resolveType({ name: "name", widget: "list" })).toEqual([]);
   });
 
   test("select", () => {
@@ -84,21 +96,19 @@ describe("Resolve widget type", () => {
         widget: "object",
         fields: [{ name: "child", widget: "string" }],
       }),
-    ).toEqual([{ name: "child", type: "string", required: true }]);
+    ).toEqual([{ name: "child", type: "string", required: true, multiple: false }]);
   });
 });
 
 describe("Types", () => {
   it("should parse primitives", () => {
-    expect(buildType()([[], []], { name: "name", type: "string", required: true })).toEqual([
-      ["name: string;"],
-      [],
-    ]);
+    expect(
+      buildType()([[], []], { name: "name", type: "string", required: true, multiple: false }),
+    ).toEqual([["name: string;"], []]);
 
-    expect(buildType()([[], []], { name: "name", type: "boolean", required: true })).toEqual([
-      ["name: boolean;"],
-      [],
-    ]);
+    expect(
+      buildType()([[], []], { name: "name", type: "boolean", required: true, multiple: false }),
+    ).toEqual([["name: boolean;"], []]);
   });
 
   it("should not extract top-level types", () => {
@@ -106,7 +116,8 @@ describe("Types", () => {
       buildType()([[], []], {
         name: "top",
         required: true,
-        type: [{ name: "name", type: "string", required: true }],
+        multiple: false,
+        type: [{ name: "name", type: "string", required: true, multiple: false }],
       }),
     ).toEqual([[], [`interface top { name: string; }`]]);
   });
@@ -116,9 +127,10 @@ describe("Types", () => {
       buildType("test")([[], []], {
         name: "name",
         required: true,
+        multiple: false,
         type: [
-          { name: "name", type: "string", required: true },
-          { name: "active", type: "boolean", required: true },
+          { name: "name", type: "string", required: true, multiple: false },
+          { name: "active", type: "boolean", required: true, multiple: false },
         ],
       }),
     ).toEqual([["name: test_name;"], [`interface test_name { name: string; active: boolean; }`]]);
@@ -129,11 +141,10 @@ describe("Types", () => {
       buildType("test")([[], []], {
         name: "name",
         required: true,
+        multiple: true,
         type: [
-          [
-            { name: "name", type: "string", required: true },
-            { name: "active", type: "boolean", required: true },
-          ],
+          { name: "name", type: "string", required: true, multiple: false },
+          { name: "active", type: "boolean", required: true, multiple: false },
         ],
       }),
     ).toEqual([["name: test_name[];"], [`interface test_name { name: string; active: boolean; }`]]);
@@ -142,7 +153,8 @@ describe("Types", () => {
       buildType("test")([[], []], {
         name: "name",
         required: true,
-        type: [[]],
+        multiple: true,
+        type: [],
       }),
     ).toEqual([["name: string[];"], []]);
   });
@@ -152,7 +164,8 @@ describe("Types", () => {
       buildType()([[], []], {
         name: "name",
         required: true,
-        type: [["one", "two", "three"]],
+        multiple: false,
+        type: ["one", "two", "three"],
       }),
     ).toEqual([["name: name_options;"], [`type name_options = 'one' | 'two' | 'three';`]]);
 
@@ -160,7 +173,8 @@ describe("Types", () => {
       buildType("root")([[], []], {
         name: "name",
         required: true,
-        type: [["one", "two", "three"]],
+        multiple: false,
+        type: ["one", "two", "three"],
       }),
     ).toEqual([
       ["name: root_name_options;"],

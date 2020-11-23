@@ -5,6 +5,7 @@ interface BaseField {
 export interface Field extends BaseField {
   widget?: string;
   required?: boolean;
+  multiple?: boolean;
   fields?: Field[];
   [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
@@ -22,5 +23,6 @@ export type Collection = FilesField & FolderField;
 export interface Widget {
   name: string;
   required: boolean;
+  multiple: boolean;
   type: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

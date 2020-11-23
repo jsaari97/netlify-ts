@@ -4,6 +4,7 @@ export const buildWidget = (field: Field): Widget => {
   return {
     name: field.name,
     required: field.required !== false,
+    multiple: field.widget === 'list' || !!field.multiple,
     type: resolveType(field),
   };
 };
@@ -24,7 +25,7 @@ export const resolveType = (field: Field): Widget["type"] => {
     case "boolean":
       return "boolean";
     case "list":
-      return [(field.fields || []).map(buildWidget)];
+      return (field.fields || []).map(buildWidget);
     case "select":
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return field.options.map((option: any) =>
@@ -44,12 +45,13 @@ type TypeArray = [string[], string[]];
 
 export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
   const required = widget.required ? "" : "?";
+  const multiple = widget.multiple ? '[]' : '';
 
   if (!Array.isArray(widget.type)) {
     types[0].push(`${widget.name}${required}: ${widget.type};`);
   } else {
-    const isArray = Array.isArray(widget.type[0]);
-    const iterator = isArray ? widget.type[0] : widget.type;
+    
+    const iterator = widget.type;
 
     if (!iterator.length) {
       types[0].push(`${widget.name}${required}: string[];`);
@@ -61,7 +63,7 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
       const name = prefix ? `${prefix}_${widget.name}` : widget.name;
 
       types[1].push(`type ${name}_options = '${iterator.join("' | '")}';`);
-      types[0].push(`${widget.name}${required}: ${name}_options;`);
+      types[0].push(`${widget.name}${required}: ${name}_options${multiple};`);
 
       return types;
     }
@@ -79,7 +81,7 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
     const [fields, interfaces] = iterator.reduce(buildType(name), [[], []]);
 
     types[1].push(...interfaces, `interface ${name} { ${fields.join(" ")} }`);
-    types[0].push(`${widget.name}${required}: ${name}${isArray ? "[]" : ""};`);
+    types[0].push(`${widget.name}${required}: ${name}${multiple};`);
   }
 
   return types;
