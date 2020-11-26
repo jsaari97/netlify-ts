@@ -4,7 +4,7 @@ export const buildWidget = (field: Field): Widget => {
   return {
     name: field.name,
     required: field.required !== false,
-    multiple: field.widget === 'list' || !!field.multiple,
+    multiple: field.widget === "list" || !!field.multiple,
     type: resolveType(field),
   };
 };
@@ -25,7 +25,17 @@ export const resolveType = (field: Field): Widget["type"] => {
     case "boolean":
       return "boolean";
     case "list":
-      return (field.fields || []).map(buildWidget);
+      if (field.field) {
+        const child = buildWidget(field.field);
+
+        return typeof child.type === "string" && field.field.widget !== "list" ? child.type : child;
+      }
+
+      if (field.fields) {
+        return field.fields.map(buildWidget);
+      }
+
+      return "string";
     case "select":
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return field.options.map((option: any) =>
@@ -44,44 +54,87 @@ export const resolveType = (field: Field): Widget["type"] => {
 type TypeArray = [string[], string[]];
 
 export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
-  const required = widget.required ? "" : "?";
-  const multiple = widget.multiple ? '[]' : '';
+  const required = !widget.required ? "?" : "";
+  const multiple = widget.multiple ? "[]" : "";
+  const name = prefix ? `${prefix}_${widget.name}` : widget.name;
 
   if (!Array.isArray(widget.type)) {
-    types[0].push(`${widget.name}${required}: ${widget.type};`);
+    // if widget is a primitive
+    if (typeof widget.type === "string") {
+      return [[...types[0], `${widget.name}${required}: ${widget.type}${multiple};`], types[1]];
+    }
+
+    // single field list logic
+
+    const child = buildType(name)([[], []], {
+      ...widget.type,
+      multiple: widget.multiple,
+      required: widget.required,
+    });
+
+    // check if nested and how deep
+    const nestedDepth = (): number => {
+      let count = 0;
+
+      const walker = (w: Widget): void => {
+        count++;
+
+        if (typeof w.type === "object" && w.type.multiple) {
+          walker(w.type);
+        }
+      };
+
+      walker(widget);
+
+      return count;
+    };
+
+    const depth = nestedDepth();
+
+    return [
+      [
+        ...types[0],
+        ...child[0].map((prop) =>
+          prop
+            .replace(new RegExp(`^${widget.type.name}`), widget.name)
+            .replace("[]", "[]".repeat(depth)),
+        ),
+      ],
+      [...types[1], ...child[1]],
+    ];
   } else {
-    
     const iterator = widget.type;
 
+    // resolve to string array if list is empty
     if (!iterator.length) {
-      types[0].push(`${widget.name}${required}: string[];`);
-
-      return types;
+      return [[...types[0], `${widget.name}${required}: string[];`], types[1]];
     }
 
+    // check if enum list
     if (typeof iterator[0] === "string") {
-      const name = prefix ? `${prefix}_${widget.name}` : widget.name;
-
-      types[1].push(`type ${name}_options = '${iterator.join("' | '")}';`);
-      types[0].push(`${widget.name}${required}: ${name}_options${multiple};`);
-
-      return types;
+      return [
+        [...types[0], `${widget.name}${required}: ${name}_options${multiple};`],
+        [...types[1], `type ${name}_options = '${iterator.join("' | '")}';`],
+      ];
     }
 
+    // root level collection
     if (!prefix) {
       const [fields, interfaces] = iterator.reduce(buildType(widget.name), [[], []]);
 
-      types[1].push(...interfaces, `interface ${widget.name} { ${fields.join(" ")} }`);
-
-      return types;
+      return [
+        types[0],
+        [...types[1], ...interfaces, `interface ${widget.name} { ${fields.join(" ")} }`],
+      ];
     }
 
-    const name = `${prefix}_${widget.name}`;
-
+    // object field
     const [fields, interfaces] = iterator.reduce(buildType(name), [[], []]);
 
-    types[1].push(...interfaces, `interface ${name} { ${fields.join(" ")} }`);
-    types[0].push(`${widget.name}${required}: ${name}${multiple};`);
+    return [
+      [...types[0], `${widget.name}${required}: ${name}${multiple};`],
+      [...types[1], ...interfaces, `interface ${name} { ${fields.join(" ")} }`],
+    ];
   }
 
   return types;
