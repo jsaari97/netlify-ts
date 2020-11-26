@@ -534,4 +534,34 @@ describe("Type generation", () => {
       ]);
     });
   });
+
+  describe("any", () => {
+    it("should resolve any to any", () => {
+      expect(
+        parse(
+          {
+            name: "name",
+            type: "any",
+            required: true,
+            multiple: false,
+          },
+          "parent",
+        ),
+      ).toEqual([["name: any;"], []]);
+    });
+
+    it("should resolve 'any' array", () => {
+      expect(
+        parse(
+          {
+            name: "name",
+            type: "any",
+            required: true,
+            multiple: true,
+          },
+          "parent",
+        ),
+      ).toEqual([["name: any[];"], []]);
+    });
+  });
 });
