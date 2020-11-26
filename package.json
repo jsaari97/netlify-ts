@@ -23,6 +23,7 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint '*/**/*.{js,ts}' --fix --ignore-pattern lib/**/*",
+    "kitchen-sink": "./bin/run kitchen-sink.yml",
     "prepublish": "npm run build"
   },
   "dependencies": {
