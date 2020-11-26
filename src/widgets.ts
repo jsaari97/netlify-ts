@@ -39,6 +39,10 @@ export const resolveType = (field: Field): Widget["type"] => {
         return field.fields.map(buildWidget);
       }
 
+      if (field.types) {
+        return "any";
+      }
+
       return "string";
     case "select":
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
