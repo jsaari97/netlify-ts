@@ -205,13 +205,13 @@ describe("Resolve widget type", () => {
   });
 
   describe("select", () => {
-    it("should resolve primitives", () => {
+    it("should resolve primitive options", () => {
       expect(
         resolveType({ name: "name", widget: "select", options: ["one", "two", "three"] }),
       ).toEqual(["one", "two", "three"]);
     });
 
-    it("should resolve object list", () => {
+    it("should resolve key-value options", () => {
       expect(
         resolveType({
           name: "name",
@@ -219,6 +219,24 @@ describe("Resolve widget type", () => {
           options: [{ value: "one" }, { value: "two" }, { value: "three" }],
         }),
       ).toEqual(["one", "two", "three"]);
+    });
+
+    it("should resolve numeric options", () => {
+      expect(resolveType({ name: "name", widget: "select", options: [1, 2, 3] })).toEqual([
+        1,
+        2,
+        3,
+      ]);
+    });
+
+    it("should resolve key-value numeric options", () => {
+      expect(
+        resolveType({
+          name: "name",
+          widget: "select",
+          options: [{ value: 1 }, { value: 2 }, { value: 3 }],
+        }),
+      ).toEqual([1, 2, 3]);
     });
   });
 
@@ -517,7 +535,18 @@ describe("Type generation", () => {
           multiple: false,
           type: ["one", "two", "three"],
         }),
-      ).toEqual([["name: name_options;"], [`type name_options = 'one' | 'two' | 'three';`]]);
+      ).toEqual([["name: name_options;"], [`type name_options = "one" | "two" | "three";`]]);
+    });
+
+    it("should parse numeric select options", () => {
+      expect(
+        buildType()([[], []], {
+          name: "name",
+          required: true,
+          multiple: false,
+          type: [1, 2, 3],
+        }),
+      ).toEqual([["name: name_options;"], [`type name_options = 1 | 2 | 3;`]]);
     });
 
     it("should namespace type", () => {
@@ -530,7 +559,7 @@ describe("Type generation", () => {
         }),
       ).toEqual([
         ["name: root_name_options;"],
-        [`type root_name_options = 'one' | 'two' | 'three';`],
+        [`type root_name_options = "one" | "two" | "three";`],
       ]);
     });
   });

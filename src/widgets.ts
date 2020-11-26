@@ -55,6 +55,9 @@ export const resolveType = (field: Field): Widget["type"] => {
   }
 };
 
+const wrapEnum = (item: number | string): string =>
+  typeof item === "number" ? `${item}` : `"${item}"`;
+
 type TypeArray = [string[], string[]];
 
 export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
@@ -125,10 +128,10 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
     }
 
     // check if enum list
-    if (typeof iterator[0] === "string") {
+    if (typeof iterator[0] === "string" || typeof iterator[0] === "number") {
       return [
         [...types[0], `${widget.name}${required}: ${name}_options${multiple};`],
-        [...types[1], `type ${name}_options = '${iterator.join("' | '")}';`],
+        [...types[1], `type ${name}_options = ${iterator.map(wrapEnum).join(" | ")};`],
       ];
     }
 

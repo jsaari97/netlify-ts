@@ -8,8 +8,8 @@ describe("Type formatting", () => {
   });
 
   it("should format type literals", () => {
-    expect(formatType("type A = 'one' | 'two' | 'three';")).toEqual(
-      "type A = 'one' | 'two' | 'three';",
+    expect(formatType(`type A = "one" | "two" | "three";`)).toEqual(
+      `type A = "one" | "two" | "three";`,
     );
   });
 });
