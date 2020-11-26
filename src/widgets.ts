@@ -28,6 +28,10 @@ export const resolveType = (field: Field): Widget["type"] => {
       if (field.field) {
         const child = buildWidget(field.field);
 
+        if (typeof child.type === "string" && field.field.required === false) {
+          child.type += "?";
+        }
+
         return typeof child.type === "string" && field.field.widget !== "list" ? child.type : child;
       }
 
@@ -61,7 +65,12 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
   if (!Array.isArray(widget.type)) {
     // if widget is a primitive
     if (typeof widget.type === "string") {
-      return [[...types[0], `${widget.name}${required}: ${widget.type}${multiple};`], types[1]];
+      const optional = widget.type.includes("?") ? "?" : "";
+
+      const key = `${widget.name}${required || optional}`;
+      const value = `${optional ? widget.type.replace("?", "") : widget.type}${multiple}`;
+
+      return [[...types[0], `${key}: ${value};`], types[1]];
     }
 
     // single field list logic
@@ -73,11 +82,16 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
     });
 
     // check if nested and how deep
-    const nestedDepth = (): number => {
-      let count = 0;
+    const nestedDepth = (): { depth: number; optional: boolean } => {
+      let depth = 0;
+      let optional = false;
 
       const walker = (w: Widget): void => {
-        count++;
+        depth++;
+
+        if (!w.required) {
+          optional = true;
+        }
 
         if (typeof w.type === "object" && w.type.multiple) {
           walker(w.type);
@@ -86,17 +100,17 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
 
       walker(widget);
 
-      return count;
+      return { depth, optional };
     };
 
-    const depth = nestedDepth();
+    const { depth, optional } = nestedDepth();
 
     return [
       [
         ...types[0],
         ...child[0].map((prop) =>
           prop
-            .replace(new RegExp(`^${widget.type.name}`), widget.name)
+            .replace(new RegExp(`^${widget.type.name}`), `${widget.name}${optional ? "?" : ""}`)
             .replace("[]", "[]".repeat(depth)),
         ),
       ],

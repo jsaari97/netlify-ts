@@ -93,6 +93,16 @@ describe("Resolve widget type", () => {
       ).toEqual("boolean");
     });
 
+    it("should be optional if primitive field is", () => {
+      expect(
+        resolveType({
+          name: "name",
+          widget: "list",
+          field: { name: "child", widget: "boolean", required: false },
+        }),
+      ).toEqual("boolean?");
+    });
+
     it("should return XXX if field is set", () => {
       expect(
         resolveType({
@@ -322,6 +332,20 @@ describe("Type generation", () => {
       ).toEqual([["list: boolean[];"], []]);
     });
 
+    it("should parse simple single field list as optional", () => {
+      expect(
+        parse(
+          {
+            name: "list",
+            required: true,
+            multiple: true,
+            type: "boolean?",
+          },
+          "parent",
+        ),
+      ).toEqual([["list?: boolean[];"], []]);
+    });
+
     it("should parse object single field list", () => {
       expect(
         parse(
@@ -478,7 +502,7 @@ describe("Type generation", () => {
         ["child: parent_child[];"],
         [
           "interface parent_child_items_row { label: string; }",
-          "interface parent_child { title: string; items: parent_child_items_row[][]; }",
+          "interface parent_child { title: string; items?: parent_child_items_row[][]; }",
         ],
       ]);
     });
