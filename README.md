@@ -1,7 +1,10 @@
-Netlify Type Generator
-===
+# Netlify Type Generator
 
-Turn your Netlify CMS collections into TypeScript typings!
+**Turn your Netlify CMS collections into TypeScript typings!**
+
+<br />
+
+This package generates a [TypeScript](https://www.typescriptlang.org/) schema of your [Netlify CMS](https://www.netlifycms.org/) content collections to be consumed by frontend apps for better type support.
 
 # Features
 
@@ -17,6 +20,7 @@ Turn your Netlify CMS collections into TypeScript typings!
 The package can be installed globally or as a `devDependency` using NPM or Yarn.
 
 **NPM:**
+
 ```bash
 npm install -g netlify-ts
 
@@ -26,6 +30,7 @@ npm install -D netlify-ts
 ```
 
 **Yarn:**
+
 ```bash
 yarn global add netlify-ts
 
@@ -36,7 +41,7 @@ yarn add -D netlify-ts
 
 # Usage
 
-## Method #1: CLI
+## Method 1: CLI
 
 The main method of usage is through the command-line. Having installed the package either globally or in project's `devDependencies`, simply call `netlify-ts` with a parameter pointing to your Netlify CMS admin `config.yml` file.
 
@@ -50,12 +55,11 @@ This generates by default a `netlify-types.ts` file in the project root containi
 
 You can also specify a custom output location by providing a second optional parameter. Omitting the filename outputs a file in the given directory with the default filename (`netlify-types.ts`).
 
-
 ```bash
 netlify-ts public/admin/config.yml src/my-types.ts
 ```
 
-## Method #2: Programmatically
+## Method 2: Programmatically
 
 In case the CLI doesn't suit your project workflow or you need to invoke the type generation inside your code we've got you covered. The project exposes a `default` async function that returns the generated type file.
 
