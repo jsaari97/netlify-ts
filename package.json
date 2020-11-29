@@ -27,7 +27,7 @@
     "test": "jest",
     "lint": "eslint '*/**/*.{js,ts}' --fix --ignore-pattern lib/**/*",
     "kitchen-sink": "./bin/run kitchen-sink.yml",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "js-yaml": "^3.14.0",
