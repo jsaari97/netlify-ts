@@ -1,70 +1,11 @@
-import { Field, Widget } from "./types";
-
-export const buildWidget = (field: Field): Widget => {
-  return {
-    name: field.name,
-    required: field.required !== false,
-    multiple: field.widget === "list" || !!field.multiple,
-    type: resolveType(field),
-  };
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const resolveType = (field: Field): Widget["type"] => {
-  switch (field.widget) {
-    case "string":
-    case "text":
-    case "image":
-    case "date":
-    case "datetime":
-    case "color":
-    case "markdown":
-      return "string";
-    case "number":
-      return field.value_type === "int" || field.value_type === "float" ? "number" : "string";
-    case "boolean":
-      return "boolean";
-    case "list":
-      if (field.field) {
-        const child = buildWidget(field.field);
-
-        if (typeof child.type === "string" && field.field.required === false) {
-          child.type += "?";
-        }
-
-        return typeof child.type === "string" && field.field.widget !== "list" ? child.type : child;
-      }
-
-      if (field.fields) {
-        return field.fields.map(buildWidget);
-      }
-
-      if (field.types) {
-        return "any";
-      }
-
-      return "string";
-    case "select":
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return field.options.map((option: any) =>
-        typeof option === "object" ? option.value : option,
-      );
-    case "object":
-    case undefined:
-      return field.fields?.map(buildWidget);
-    case "hidden":
-    case "relation":
-    default:
-      return "any";
-  }
-};
+import { Widget } from "../types";
 
 const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
 
 type TypeArray = [string[], string[]];
 
-export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
+export const transformType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
   const required = !widget.required ? "?" : "";
   const multiple = widget.multiple ? "[]" : "";
   const name = prefix ? `${prefix}_${widget.name}` : widget.name;
@@ -82,7 +23,7 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
 
     // single field list logic
 
-    const child = buildType(name)([[], []], {
+    const child = transformType(name)([[], []], {
       ...widget.type,
       multiple: widget.multiple,
       required: widget.required,
@@ -141,7 +82,7 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
 
     // root level collection
     if (!prefix) {
-      const [fields, interfaces] = iterator.reduce(buildType(widget.name), [[], []]);
+      const [fields, interfaces] = iterator.reduce(transformType(widget.name), [[], []]);
 
       return [
         types[0],
@@ -150,13 +91,11 @@ export const buildType = (prefix = "") => (types: TypeArray, widget: Widget): Ty
     }
 
     // object field
-    const [fields, interfaces] = iterator.reduce(buildType(name), [[], []]);
+    const [fields, interfaces] = iterator.reduce(transformType(name), [[], []]);
 
     return [
       [...types[0], `${widget.name}${required}: ${name}${multiple};`],
       [...types[1], ...interfaces, `interface ${name} { ${fields.join(" ")} }`],
     ];
   }
-
-  return types;
 };

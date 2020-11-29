@@ -1,7 +1,7 @@
 import { loadConfiguration } from "./input";
 import { normalizeCollection } from "./normalize";
 import { appendExport, formatType, outputFile } from "./output";
-import { buildType, buildWidget } from "./widgets";
+import { resolveWidget, transformType } from "./widget";
 
 export default async (input: string, output: string): Promise<void> => {
   try {
@@ -9,8 +9,8 @@ export default async (input: string, output: string): Promise<void> => {
 
     const types = config
       .flatMap(normalizeCollection)
-      .map(buildWidget)
-      .reduce(buildType(), [[], []])
+      .map(resolveWidget)
+      .reduce(transformType(), [[], []])
       .flat()
       .map(formatType)
       .map(appendExport)
