@@ -1,5 +1,5 @@
 import { Widget } from "../types";
-import { transformType } from "./transform";
+import { nestedDepth, transformType, wrapEnum } from "./transform";
 
 describe("Widget transformation", () => {
   const parse = (widget: Widget, prefix?: string) => transformType(prefix)([[], []], widget);
@@ -339,3 +339,31 @@ describe("Widget transformation", () => {
     });
   });
 });
+
+describe("Nested list depth", () => {
+  it("should return correct depth", () => {
+    expect(
+      nestedDepth({
+        name: "list",
+        required: true,
+        multiple: true,
+        type: {
+          name: "nested",
+          required: true,
+          multiple: true,
+          type: "boolean",
+        },
+      }),
+    ).toEqual({ depth: 2, optional: false });
+  });
+});
+
+describe('Enum wrapping', () => {
+  it('should parse strings', () => {
+    expect(wrapEnum('string')).toEqual(`"string"`)
+  })
+
+  it('should parse numbers', () => {
+    expect(wrapEnum(1)).toEqual(`1`)
+  })
+})

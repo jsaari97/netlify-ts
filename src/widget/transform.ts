@@ -1,7 +1,28 @@
 import { Widget } from "../types";
 
-const wrapEnum = (item: number | string): string =>
+export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
+
+export const nestedDepth = (widget: Widget): { depth: number; optional: boolean } => {
+  let depth = 0;
+  let optional = false;
+
+  const walker = (w: Widget): void => {
+    depth++;
+
+    if (!w.required) {
+      optional = true;
+    }
+
+    if (typeof w.type === "object" && w.type.multiple) {
+      walker(w.type);
+    }
+  };
+
+  walker(widget);
+
+  return { depth, optional };
+};
 
 type TypeArray = [string[], string[]];
 
@@ -30,28 +51,7 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
     });
 
     // check if nested and how deep
-    const nestedDepth = (): { depth: number; optional: boolean } => {
-      let depth = 0;
-      let optional = false;
-
-      const walker = (w: Widget): void => {
-        depth++;
-
-        if (!w.required) {
-          optional = true;
-        }
-
-        if (typeof w.type === "object" && w.type.multiple) {
-          walker(w.type);
-        }
-      };
-
-      walker(widget);
-
-      return { depth, optional };
-    };
-
-    const { depth, optional } = nestedDepth();
+    const { depth, optional } = nestedDepth(widget);
 
     return [
       [
