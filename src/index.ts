@@ -1,23 +1,11 @@
+import { generateTypes } from "./generate";
 import { loadConfiguration } from "./input";
-import { normalizeCollection } from "./normalize";
-import { appendExport, formatType } from "./output";
-import { resolveWidget, transformType } from "./widget";
 
 export default async (input: string): Promise<string> => {
   try {
-    const config = await loadConfiguration(input);
+    const collections = await loadConfiguration(input);
 
-    const types = config
-      .flatMap(normalizeCollection)
-      .map(resolveWidget)
-      .reduce(transformType(), [[], []])
-      .flat()
-      .map(formatType)
-      .map(appendExport)
-      .join("\n\n")
-      .concat("\n");
-
-    return types;
+    return generateTypes(collections);
   } catch (error) {
     return Promise.reject(error);
   }

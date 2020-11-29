@@ -1,7 +1,9 @@
 import yargs from "yargs";
-import generate from ".";
+import ora from "ora";
 import { OUTPUT_FILENAME } from "./constants";
 import { outputFile } from "./output";
+import { loadConfiguration } from "./input";
+import { generateTypes } from "./generate";
 
 interface CommandArguments {
   input: string;
@@ -12,10 +14,28 @@ const args = yargs
   .command<CommandArguments>("$0 <input> [output]", "Output generated types from input")
   .demandCommand(2).argv;
 
+let spinner: ora.Ora;
+
 export const run = async (): Promise<void> => {
-  const { input, output = OUTPUT_FILENAME } = args;
+  try {
+    const { input, output = OUTPUT_FILENAME } = args;
 
-  const types = await generate(input);
+    spinner = ora("Loading config").start();
 
-  await outputFile(output, types);
+    const collections = await loadConfiguration(input);
+
+    spinner.succeed();
+    spinner = ora("Generating types").start();
+
+    const types = generateTypes(collections);
+
+    spinner.succeed();
+    spinner = ora("Saving file").start();
+
+    await outputFile(output, types);
+
+    spinner.succeed();
+  } catch (error) {
+    spinner.fail(error.message);
+  }
 };
