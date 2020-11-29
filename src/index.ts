@@ -1,9 +1,9 @@
 import { loadConfiguration } from "./input";
 import { normalizeCollection } from "./normalize";
-import { appendExport, formatType, outputFile } from "./output";
+import { appendExport, formatType } from "./output";
 import { resolveWidget, transformType } from "./widget";
 
-export default async (input: string, output: string): Promise<void> => {
+export default async (input: string): Promise<string> => {
   try {
     const config = await loadConfiguration(input);
 
@@ -17,7 +17,7 @@ export default async (input: string, output: string): Promise<void> => {
       .join("\n\n")
       .concat("\n");
 
-    await outputFile(output, types);
+    return types;
   } catch (error) {
     return Promise.reject(error);
   }

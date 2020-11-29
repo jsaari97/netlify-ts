@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import generate from ".";
 import { OUTPUT_FILENAME } from "./constants";
+import { outputFile } from "./output";
 
 interface CommandArguments {
   input: string;
@@ -14,5 +15,7 @@ const args = yargs
 export const run = async (): Promise<void> => {
   const { input, output = OUTPUT_FILENAME } = args;
 
-  await generate(input, output);
+  const types = await generate(input);
+
+  await outputFile(output, types);
 };
