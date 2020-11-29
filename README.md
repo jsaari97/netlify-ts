@@ -1,5 +1,10 @@
 # Netlify Type Generator
 
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fjsaari97%2Fnetlify-ts%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/jsaari97/netlify-ts/goto?ref=master)
+![Project dependency status](https://img.shields.io/david/jsaari97/netlify-ts)
+![Supported Node versions](https://img.shields.io/node/v/netlify-ts)
+![Project license](https://img.shields.io/npm/l/netlify-ts)
+
 **Turn your Netlify CMS collections into TypeScript typings!**
 
 <br />
