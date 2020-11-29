@@ -12,6 +12,9 @@
     "types",
     "generate"
   ],
+  "engines": {
+    "node": ">=10.23.0"
+  },
   "license": "MIT",
   "bin": "./bin/run",
   "files": [
