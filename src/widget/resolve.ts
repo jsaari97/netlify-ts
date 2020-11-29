@@ -19,6 +19,7 @@ export const resolveType = (field: Field): Widget["type"] => {
     case "datetime":
     case "color":
     case "markdown":
+    case "map":
       return "string";
     case "number":
       return field.value_type === "int" || field.value_type === "float" ? "number" : "string";

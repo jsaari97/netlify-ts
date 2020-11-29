@@ -74,6 +74,10 @@ describe("Resolve widget type", () => {
     expect(resolveType({ name: "name", widget: "relation" })).toEqual("any");
   });
 
+  test("map", () => {
+    expect(resolveType({ name: "name", widget: "map" })).toEqual("string");
+  });
+
   describe("list", () => {
     it("should return string type if no field or fields prop provided", () => {
       expect(
