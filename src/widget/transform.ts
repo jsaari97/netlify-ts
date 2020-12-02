@@ -14,7 +14,7 @@ export const nestedDepth = (widget: Widget): { depth: number; optional: boolean 
       optional = true;
     }
 
-    if (typeof w.type === "object" && w.type.multiple) {
+    if (typeof w.type === "object" && !Array.isArray(w.type) && w.type.multiple) {
       walker(w.type);
     }
   };
@@ -53,12 +53,14 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
     // check if nested and how deep
     const { depth, optional } = nestedDepth(widget);
 
+    const propRegex = new RegExp(`^${widget.type.name}`);
+
     return [
       [
         ...types[0],
         ...child[0].map((prop) =>
           prop
-            .replace(new RegExp(`^${widget.type.name}`), `${widget.name}${optional ? "?" : ""}`)
+            .replace(propRegex, `${widget.name}${optional ? "?" : ""}`)
             .replace("[]", "[]".repeat(depth)),
         ),
       ],
@@ -76,13 +78,19 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
     if (typeof iterator[0] === "string" || typeof iterator[0] === "number") {
       return [
         [...types[0], `${widget.name}${required}: ${name}_options${multiple};`],
-        [...types[1], `type ${name}_options = ${iterator.map(wrapEnum).join(" | ")};`],
+        [
+          ...types[1],
+          `type ${name}_options = ${(iterator as (string | number)[]).map(wrapEnum).join(" | ")};`,
+        ],
       ];
     }
 
     // root level collection
     if (!prefix) {
-      const [fields, interfaces] = iterator.reduce(transformType(widget.name), [[], []]);
+      const [fields, interfaces] = (iterator as Widget[]).reduce(transformType(widget.name), [
+        [],
+        [],
+      ]);
 
       return [
         types[0],
@@ -91,7 +99,7 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
     }
 
     // object field
-    const [fields, interfaces] = iterator.reduce(transformType(name), [[], []]);
+    const [fields, interfaces] = (iterator as Widget[]).reduce(transformType(name), [[], []]);
 
     return [
       [...types[0], `${widget.name}${required}: ${name}${multiple};`],
