@@ -4,7 +4,7 @@ export const resolveWidget = (field: Field): Widget => {
   return {
     name: field.name,
     required: field.required !== false,
-    multiple: field.widget === "list" || !!field.multiple,
+    multiple: field.widget === "list" || (field.widget === "select" && !!field.multiple),
     type: resolveType(field),
   };
 };
@@ -46,12 +46,9 @@ export const resolveType = (field: Field): Widget["type"] => {
 
       return "string";
     case "select":
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return field.options.map((option: any) =>
-        typeof option === "object" ? option.value : option,
-      );
+      return field.options.map((option) => (typeof option === "object" ? option.value : option));
     case "object":
-    case undefined:
+    case "root":
       return field.fields?.map(resolveWidget);
     case "hidden":
     case "relation":

@@ -7,7 +7,9 @@ describe("Resolve widget shape", () => {
     });
 
     it('should be true if "multiple" prop true', () => {
-      expect(resolveWidget({ name: "name", widget: "string", multiple: true }).multiple).toBe(true);
+      expect(
+        resolveWidget({ name: "name", widget: "select", multiple: true, options: [] }).multiple,
+      ).toBe(true);
     });
 
     it('should be true if "list" widget type', () => {
@@ -52,7 +54,8 @@ describe("Resolve widget type", () => {
     });
 
     it("should return string if value_type is invalid", () => {
-      expect(resolveType({ name: "name", widget: "number", value_type: "number" })).toEqual(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect(resolveType({ name: "name", widget: "number", value_type: "number" as any })).toEqual(
         "string",
       );
     });
@@ -221,7 +224,11 @@ describe("Resolve widget type", () => {
         resolveType({
           name: "name",
           widget: "select",
-          options: [{ value: "one" }, { value: "two" }, { value: "three" }],
+          options: [
+            { label: "Label", value: "one" },
+            { label: "Label", value: "two" },
+            { label: "Label", value: "three" },
+          ],
         }),
       ).toEqual(["one", "two", "three"]);
     });
@@ -239,7 +246,11 @@ describe("Resolve widget type", () => {
         resolveType({
           name: "name",
           widget: "select",
-          options: [{ value: 1 }, { value: 2 }, { value: 3 }],
+          options: [
+            { label: "Label", value: 1 },
+            { label: "Label", value: 2 },
+            { label: "Label", value: 3 },
+          ],
         }),
       ).toEqual([1, 2, 3]);
     });

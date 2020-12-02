@@ -1,18 +1,9 @@
 import { Collection, Field } from "./types";
 
-export const normalizeCollection = (collection: Collection): Field | Field[] => {
-  if (collection.files) {
-    return collection.files.map(normalizeField);
-  }
-
-  return normalizeField(collection);
-};
-
-const normalizeField = (field: Field): Field => {
-  return {
+export const normalizeCollection = (collection: Collection): Field[] => {
+  const iterator = collection.files || [collection];
+  return iterator.map((field) => ({
     ...field,
-    name: field.name,
-    widget: field.widget,
-    fields: field.fields?.map(normalizeField),
-  };
+    widget: "root",
+  }));
 };
