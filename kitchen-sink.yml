@@ -266,3 +266,16 @@ collections: # A list of collections the CMS should be able to edit
               - { label: "Date", name: "date", widget: "date" }
               - { label: "Image", name: "image", widget: "image" }
               - { label: "File", name: "file", widget: "file" }
+      - label: "Code block"
+        name: "code"
+        widget: "code"
+      - label: "Code alt block"
+        name: "code_alt"
+        widget: "code"
+        keys:
+          code: "alt"
+          lang: "typescript"
+      - label: "Snippet"
+        name: "snippet"
+        widget: "code"
+        output_code_only: true

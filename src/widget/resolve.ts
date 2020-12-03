@@ -25,6 +25,17 @@ export const resolveType = (field: Field): Widget["type"] => {
       return field.value_type === "int" || field.value_type === "float" ? "number" : "string";
     case "boolean":
       return "boolean";
+    case "code":
+      if (field.output_code_only) {
+        return "string";
+      }
+
+      const { code = "code", lang = "lang" } = field.keys || {};
+
+      return [
+        { name: code, required: true, multiple: false, type: "string" },
+        { name: lang, required: true, multiple: false, type: "string" },
+      ];
     case "list":
       if (field.field) {
         const child = resolveWidget(field.field);

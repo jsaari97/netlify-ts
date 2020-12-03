@@ -57,6 +57,28 @@ describe("Widget transformation", () => {
     });
   });
 
+  describe("code", () => {
+    it("should object type to object", () => {
+      expect(
+        parse(
+          {
+            name: "snippet",
+            required: true,
+            multiple: false,
+            type: [
+              { name: "code", type: "string", required: true, multiple: false },
+              { name: "lang", type: "string", required: true, multiple: false },
+            ],
+          },
+          "parent",
+        ),
+      ).toEqual([
+        ["snippet: parent_snippet;"],
+        ["interface parent_snippet { code: string; lang: string; }"],
+      ]);
+    });
+  });
+
   describe("list", () => {
     it("should parse array objects", () => {
       expect(
@@ -358,12 +380,12 @@ describe("Nested list depth", () => {
   });
 });
 
-describe('Enum wrapping', () => {
-  it('should parse strings', () => {
-    expect(wrapEnum('string')).toEqual(`"string"`)
-  })
+describe("Enum wrapping", () => {
+  it("should parse strings", () => {
+    expect(wrapEnum("string")).toEqual(`"string"`);
+  });
 
-  it('should parse numbers', () => {
-    expect(wrapEnum(1)).toEqual(`1`)
-  })
-})
+  it("should parse numbers", () => {
+    expect(wrapEnum(1)).toEqual(`1`);
+  });
+});

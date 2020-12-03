@@ -81,6 +81,30 @@ describe("Resolve widget type", () => {
     expect(resolveType({ name: "name", widget: "map" })).toEqual("string");
   });
 
+  describe("code", () => {
+    it("should return object by default", () => {
+      expect(resolveType({ name: "name", widget: "code" })).toEqual([
+        { name: "code", type: "string", required: true, multiple: false },
+        { name: "lang", type: "string", required: true, multiple: false },
+      ]);
+    });
+
+    it("should return string by default", () => {
+      expect(resolveType({ name: "name", widget: "code", output_code_only: true })).toEqual(
+        "string",
+      );
+    });
+
+    it("should return custom object if 'keys' exists", () => {
+      expect(
+        resolveType({ name: "name", widget: "code", keys: { code: "echo", lang: "bash" } }),
+      ).toEqual([
+        { name: "echo", type: "string", required: true, multiple: false },
+        { name: "bash", type: "string", required: true, multiple: false },
+      ]);
+    });
+  });
+
   describe("list", () => {
     it("should return string type if no field or fields prop provided", () => {
       expect(
@@ -111,7 +135,7 @@ describe("Resolve widget type", () => {
       ).toEqual("boolean?");
     });
 
-    it("should return XXX if field is set", () => {
+    it("should return object if field is of type object", () => {
       expect(
         resolveType({
           name: "name",
