@@ -25,7 +25,7 @@
     "prebuild": "rm -rf lib",
     "build": "tsc",
     "test": "jest",
-    "lint": "eslint --cache --fix",
+    "lint": "eslint --fix",
     "kitchen-sink": "./bin/run kitchen-sink.yml",
     "prepublishOnly": "npm run build"
   },
