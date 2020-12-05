@@ -1,11 +1,11 @@
-import { normalizeCollection } from "./normalize";
+import { pullCollection } from "./collection";
 import { appendExport, formatType } from "./output";
-import { Collection } from "./types";
 import { resolveWidget, transformType } from "./widget";
+import { Collection } from "./types";
 
 export const generateTypes = (collections: Collection[]): string => {
   return collections
-    .flatMap(normalizeCollection)
+    .flatMap(pullCollection)
     .map(resolveWidget)
     .reduce(transformType(), [[], []])
     .flat()
