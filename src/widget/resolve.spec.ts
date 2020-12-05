@@ -234,6 +234,67 @@ describe("Resolve widget type", () => {
         }),
       ).toEqual([{ name: "child", type: "string", required: true, multiple: false }]);
     });
+
+    describe("typed", () => {
+      it("should resolve typed list", () => {
+        expect(
+          resolveType({
+            name: "name",
+            widget: "list",
+            types: [
+              { name: "one", widget: "object", fields: [{ name: "key", widget: "string" }] },
+              { name: "two", widget: "object", fields: [{ name: "id", widget: "string" }] },
+            ],
+          }),
+        ).toEqual([
+          [
+            "type",
+            {
+              name: "one",
+              required: true,
+              multiple: false,
+              type: [{ name: "key", type: "string", required: true, multiple: false }],
+            },
+            {
+              name: "two",
+              required: true,
+              multiple: false,
+              type: [{ name: "id", type: "string", required: true, multiple: false }],
+            },
+          ],
+        ]);
+      });
+
+      it("should respect typeKey", () => {
+        expect(
+          resolveType({
+            name: "name",
+            widget: "list",
+            typeKey: "kind",
+            types: [
+              { name: "one", widget: "object", fields: [{ name: "key", widget: "string" }] },
+              { name: "two", widget: "object", fields: [{ name: "id", widget: "string" }] },
+            ],
+          }),
+        ).toEqual([
+          [
+            "kind",
+            {
+              name: "one",
+              required: true,
+              multiple: false,
+              type: [{ name: "key", type: "string", required: true, multiple: false }],
+            },
+            {
+              name: "two",
+              required: true,
+              multiple: false,
+              type: [{ name: "id", type: "string", required: true, multiple: false }],
+            },
+          ],
+        ]);
+      });
+    });
   });
 
   describe("select", () => {

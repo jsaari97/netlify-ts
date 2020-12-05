@@ -1,5 +1,5 @@
 import { Widget } from "../types";
-import { nestedDepth, transformType, wrapEnum } from "./transform";
+import { nestedDepth, transformType, wrapEnum, pullType } from "./transform";
 
 describe("Widget transformation", () => {
   const parse = (widget: Widget, prefix?: string) => transformType(prefix)([[], []], widget);
@@ -290,6 +290,103 @@ describe("Widget transformation", () => {
     });
   });
 
+  describe("typed lists", () => {
+    it("should parse typed lists", () => {
+      expect(
+        parse(
+          {
+            name: "list",
+            required: true,
+            multiple: true,
+            type: [
+              [
+                "__typename",
+                {
+                  name: "one",
+                  required: true,
+                  multiple: false,
+                  type: [
+                    {
+                      name: "key",
+                      type: "string",
+                      required: true,
+                      multiple: false,
+                    },
+                  ],
+                },
+                {
+                  name: "two",
+                  required: true,
+                  multiple: false,
+                  type: [{ name: "id", type: "number", required: true, multiple: false }],
+                },
+              ],
+            ],
+          },
+          "parent",
+        ),
+      ).toEqual([
+        ["list: (parent_list_one | parent_list_two)[];"],
+        [
+          `interface parent_list_one { __typename: "one"; key: string; }`,
+          `interface parent_list_two { __typename: "two"; id: number; }`,
+        ],
+      ]);
+    });
+
+    it("should parse typed lists with objects", () => {
+      expect(
+        parse(
+          {
+            name: "list",
+            required: true,
+            multiple: true,
+            type: [
+              [
+                "type",
+                {
+                  name: "one",
+                  required: true,
+                  multiple: false,
+                  type: [
+                    {
+                      name: "key",
+                      required: true,
+                      multiple: false,
+                      type: [
+                        {
+                          name: "deep",
+                          required: true,
+                          multiple: false,
+                          type: "string",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  name: "two",
+                  required: true,
+                  multiple: false,
+                  type: [{ name: "id", type: [1, 2, 3], required: true, multiple: false }],
+                },
+              ],
+            ],
+          },
+          "parent",
+        ),
+      ).toEqual([
+        ["list: (parent_list_one | parent_list_two)[];"],
+        [
+          `type parent_list_two_id_options = 1 | 2 | 3;`,
+          `interface parent_list_one_key { deep: string; }`,
+          `interface parent_list_one { type: "one"; key: parent_list_one_key; }`,
+          `interface parent_list_two { type: "two"; id: parent_list_two_id_options; }`,
+        ],
+      ]);
+    });
+  });
+
   describe("select", () => {
     it("should parse select options", () => {
       expect(
@@ -387,5 +484,11 @@ describe("Enum wrapping", () => {
 
   it("should parse numbers", () => {
     expect(wrapEnum(1)).toEqual(`1`);
+  });
+});
+
+describe("Pull typename", () => {
+  it("should pull type name", () => {
+    expect(pullType("one: parent_list_one;")).toEqual("parent_list_one");
   });
 });

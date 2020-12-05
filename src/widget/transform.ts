@@ -24,7 +24,24 @@ export const nestedDepth = (widget: Widget): { depth: number; optional: boolean 
   return { depth, optional };
 };
 
+export const pullType = (type: string): string => {
+  const match = type.match(/:\s(.*);$/);
+
+  if (match) {
+    return match[1];
+  }
+
+  return type;
+};
+
+export const zip = <T>(a: T[]) => (b: T[]): [T, T][] => a.map((k, i) => [k, b[i]]);
+
+export const insertTypeKey = (key: string) => ([value, type]: [string, string]): string =>
+  type.replace("{", `{ ${key}: ${value};`);
+
 type TypeArray = [string[], string[]];
+
+const empty: TypeArray = [[], []];
 
 export const transformType = (prefix = "") => (types: TypeArray, widget: Widget): TypeArray => {
   const required = !widget.required ? "?" : "";
@@ -44,7 +61,7 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
 
     // single field list logic
 
-    const child = transformType(name)([[], []], {
+    const child = transformType(name)(empty, {
       ...widget.type,
       multiple: widget.multiple,
       required: widget.required,
@@ -85,12 +102,30 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
       ];
     }
 
+    // typed list
+    if (Array.isArray(iterator[0])) {
+      const [typeKey, ...objects] = iterator[0];
+      const [names, interfaces] = (objects as Widget[]).reduce(transformType(name), empty);
+      const typeNames = (objects as Widget[]).map((w) => w.name);
+
+      const pattern = new RegExp(`(${typeNames.join("|")}) {`);
+
+      // sort typed lists last and splice rest
+      const rest = interfaces
+        .sort((w) => (pattern.test(w) ? 1 : -1))
+        .splice(0, interfaces.length - names.length);
+
+      const typeValues = zip(typeNames.map(wrapEnum));
+
+      return [
+        [...types[0], `${widget.name}${required}: (${names.map(pullType).join(" | ")})[];`],
+        [...types[1], ...rest, ...typeValues(interfaces).map(insertTypeKey(typeKey))],
+      ];
+    }
+
     // root level collection
     if (!prefix) {
-      const [fields, interfaces] = (iterator as Widget[]).reduce(transformType(widget.name), [
-        [],
-        [],
-      ]);
+      const [fields, interfaces] = (iterator as Widget[]).reduce(transformType(widget.name), empty);
 
       return [
         types[0],

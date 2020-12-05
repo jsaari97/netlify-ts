@@ -24,7 +24,8 @@ interface ListField extends BaseField {
   widget: "list";
   fields?: Field[];
   field?: Field;
-  types?: unknown;
+  types?: ObjectField[];
+  typeKey?: string;
 }
 
 interface NumberField extends BaseField {

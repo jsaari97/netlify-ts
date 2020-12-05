@@ -256,6 +256,12 @@ collections: # A list of collections the CMS should be able to edit
             widget: "object"
             fields:
               - { label: "Number", name: "number", widget: "number" }
+              - {
+                  label: "Nested Object",
+                  name: "nested",
+                  widget: "object",
+                  fields: [{ label: "Number", name: "number", widget: "number" }],
+                }
               - { label: "Select", name: "select", widget: "select", options: ["a", "b", "c"] }
               - { label: "Datetime", name: "datetime", widget: "datetime" }
               - { label: "Markdown", name: "markdown", widget: "markdown" }

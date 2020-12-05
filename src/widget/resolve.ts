@@ -52,7 +52,8 @@ export const resolveType = (field: Field): Widget["type"] => {
       }
 
       if (field.types) {
-        return "any";
+        const type = field.typeKey || "type";
+        return [[type, ...field.types.map(resolveWidget)]];
       }
 
       return "string";
