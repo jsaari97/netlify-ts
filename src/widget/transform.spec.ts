@@ -1,5 +1,5 @@
 import { Widget } from "../types";
-import { nestedDepth, transformType, wrapEnum, pullType } from "./transform";
+import { nestedDepth, transformType, wrapEnum, pullType, sortTypes } from "./transform";
 
 describe("Widget transformation", () => {
   const parse = (widget: Widget, prefix?: string) => transformType(prefix)([[], []], widget);
@@ -378,8 +378,8 @@ describe("Widget transformation", () => {
       ).toEqual([
         ["list: (parent_list_one | parent_list_two)[];"],
         [
-          `type parent_list_two_id_options = 1 | 2 | 3;`,
           `interface parent_list_one_key { deep: string; }`,
+          `type parent_list_two_id_options = 1 | 2 | 3;`,
           `interface parent_list_one { type: "one"; key: parent_list_one_key; }`,
           `interface parent_list_two { type: "two"; id: parent_list_two_id_options; }`,
         ],
@@ -484,6 +484,25 @@ describe("Enum wrapping", () => {
 
   it("should parse numbers", () => {
     expect(wrapEnum(1)).toEqual(`1`);
+  });
+});
+
+describe("Type sorting", () => {
+  it("should sort matching matching types to end of list", () => {
+    const pattern = /(typed_object_1|typed_object_2)\s{/;
+    const types = [
+      "type typed_object_1_options = 1 | 2;",
+      "interface typed_object_1 { opts: typed_object_1_options; }",
+      "interface typed_object_2_child { id: number; }",
+      "interface typed_object_2 { child: typed_object_2_child; }",
+    ];
+
+    expect(types.sort(sortTypes(pattern))).toEqual([
+      "type typed_object_1_options = 1 | 2;",
+      "interface typed_object_2_child { id: number; }",
+      "interface typed_object_1 { opts: typed_object_1_options; }",
+      "interface typed_object_2 { child: typed_object_2_child; }",
+    ]);
   });
 });
 

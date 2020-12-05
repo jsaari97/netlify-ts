@@ -34,6 +34,13 @@ export const pullType = (type: string): string => {
   return type;
 };
 
+export const sortTypes = (pattern: RegExp) => (a: string, b: string): number => {
+  const A = pattern.test(a);
+  const B = pattern.test(b);
+
+  return A && B ? 0 : A ? 1 : B ? -1 : 0;
+};
+
 export const zip = <T>(a: T[]) => (b: T[]): [T, T][] => a.map((k, i) => [k, b[i]]);
 
 export const insertTypeKey = (key: string) => ([value, type]: [string, string]): string =>
@@ -108,12 +115,10 @@ export const transformType = (prefix = "") => (types: TypeArray, widget: Widget)
       const [names, interfaces] = (objects as Widget[]).reduce(transformType(name), empty);
       const typeNames = (objects as Widget[]).map((w) => w.name);
 
-      const pattern = new RegExp(`(${typeNames.join("|")}) {`);
+      const pattern = new RegExp(`(${typeNames.map((w) => `${name}_${w}`).join("|")}) {`);
 
       // sort typed lists last and splice rest
-      const rest = interfaces
-        .sort((w) => (pattern.test(w) ? 1 : -1))
-        .splice(0, interfaces.length - names.length);
+      const rest = interfaces.sort(sortTypes(pattern)).splice(0, interfaces.length - names.length);
 
       const typeValues = zip(typeNames.map(wrapEnum));
 
