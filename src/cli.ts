@@ -2,7 +2,7 @@ import yargs from "yargs";
 import ora from "ora";
 import { OUTPUT_FILENAME } from "./constants";
 import { outputFile } from "./output";
-import { loadConfiguration } from "./input";
+import { loadConfig } from "./input";
 import { generateTypes } from "./generate";
 
 interface CommandArguments {
@@ -22,7 +22,7 @@ export const run = async (): Promise<void> => {
 
     spinner = ora("Loading config").start();
 
-    const collections = await loadConfiguration(input);
+    const collections = await loadConfig(input);
 
     spinner.succeed();
     spinner = ora("Generating types").start();

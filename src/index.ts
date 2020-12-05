@@ -1,9 +1,9 @@
 import { generateTypes } from "./generate";
-import { loadConfiguration } from "./input";
+import { loadConfig } from "./input";
 
 export default async (input: string): Promise<string> => {
   try {
-    const collections = await loadConfiguration(input);
+    const collections = await loadConfig(input);
 
     return generateTypes(collections);
   } catch (error) {

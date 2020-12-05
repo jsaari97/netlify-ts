@@ -7,9 +7,9 @@ interface YamlInput {
   collections?: Collection[];
 }
 
-export const loadConfiguration = async (filePath: string): Promise<Collection[]> => {
+export const loadConfig = async (filePath: string): Promise<Collection[]> => {
   try {
-    const file = await fs.readFile(path.join(process.cwd(), filePath), "utf8");
+    const file = await fs.readFile(path.resolve(process.cwd(), filePath), "utf8");
     const data = yaml.safeLoad(file) as YamlInput;
 
     if (typeof data !== "object" || !data.collections) {

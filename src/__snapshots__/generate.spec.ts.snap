@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Output testing should parse kitchen sink correctly 1`] = `
+"export interface posts {
+  title: string;
+  draft: boolean;
+  date: string;
+  image?: string;
+  body: string;
+}
+
+export interface faq {
+  title: string;
+  body: string;
+}
+
+export interface general_posts {
+  front_limit: string;
+  author: string;
+  thumb?: string;
+}
+
+export interface general {
+  site_title: string;
+  posts: general_posts;
+}
+
+export interface authors_authors {
+  name: string;
+  description: string;
+}
+
+export interface authors {
+  authors: authors_authors[];
+}
+
+export type kitchenSink_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type kitchenSink_select_multiple_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type kitchenSink_select_numeric_options = 1 | 2 | 3;
+
+export type kitchenSink_object_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface kitchenSink_object {
+  post: any;
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: kitchenSink_object_select_options;
+}
+
+export type kitchenSink_list_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type kitchenSink_list_object_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type kitchenSink_list_object_list_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type kitchenSink_list_object_list_object_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface kitchenSink_list_object_list_object {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: kitchenSink_list_object_list_object_select_options;
+}
+
+export interface kitchenSink_list_object_list {
+  post: any;
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: kitchenSink_list_object_list_select_options;
+  hidden: any;
+  object: kitchenSink_list_object_list_object;
+}
+
+export interface kitchenSink_list_object {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: kitchenSink_list_object_select_options;
+  list: kitchenSink_list_object_list[];
+}
+
+export interface kitchenSink_list {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: kitchenSink_list_select_options;
+  object: kitchenSink_list_object;
+}
+
+export interface kitchenSink_typed_list_type_2_object_nested {
+  number: string;
+}
+
+export type kitchenSink_typed_list_type_2_object_select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface kitchenSink_typed_list_type_1_object {
+  type: \\"type_1_object\\";
+  string: string;
+  boolean: boolean;
+  text: string;
+}
+
+export interface kitchenSink_typed_list_type_2_object {
+  type: \\"type_2_object\\";
+  number: string;
+  nested: kitchenSink_typed_list_type_2_object_nested;
+  select: kitchenSink_typed_list_type_2_object_select_options;
+  datetime: string;
+  markdown: string;
+}
+
+export interface kitchenSink_typed_list_type_3_object {
+  type: \\"type_3_object\\";
+  date: string;
+  image: string;
+  file: any;
+}
+
+export interface kitchenSink_code {
+  code: string;
+  lang: string;
+}
+
+export interface kitchenSink_code_alt {
+  alt: string;
+  typescript: string;
+}
+
+export interface kitchenSink {
+  post: any;
+  title: string;
+  boolean: boolean;
+  map: string;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  color: string;
+  colorEditable: string;
+  image: string;
+  file: any;
+  select: kitchenSink_select_options;
+  select_multiple: kitchenSink_select_multiple_options[];
+  select_numeric: kitchenSink_select_numeric_options;
+  hidden: any;
+  object: kitchenSink_object;
+  list: kitchenSink_list[];
+  typed_list: (kitchenSink_typed_list_type_1_object | kitchenSink_typed_list_type_2_object | kitchenSink_typed_list_type_3_object)[];
+  code: kitchenSink_code;
+  code_alt: kitchenSink_code_alt;
+  snippet: string;
+}
+"
+`;
