@@ -9,7 +9,12 @@ interface YamlInput {
 
 export const loadConfig = async (filePath: string): Promise<Collection[]> => {
   try {
+    if (!path.extname(filePath).match(/\.ya?ml$/)) {
+      return Promise.reject("Invalid filetype, must be an yaml file");
+    }
+
     const file = await fs.readFile(path.resolve(process.cwd(), filePath), "utf8");
+
     const data = yaml.safeLoad(file) as YamlInput;
 
     if (typeof data !== "object" || !data.collections) {
