@@ -1,5 +1,6 @@
 /node_modules
 /lib
+/coverage
 
 netlify-types.ts
 .DS_Store
