@@ -15,7 +15,7 @@ export const loadConfig = async (filePath: string): Promise<Collection[]> => {
 
     const file = await fs.readFile(path.resolve(process.cwd(), filePath), "utf8");
 
-    const data = yaml.safeLoad(file) as YamlInput;
+    const data = yaml.load(file) as YamlInput;
 
     if (typeof data !== "object" || !data.collections) {
       return Promise.reject("Failed loading collections from config file");
