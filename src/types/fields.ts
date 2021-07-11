@@ -51,6 +51,9 @@ interface ObjectField extends BaseField {
 
 interface RelationField extends BaseField {
   widget: "relation";
+  multiple?: boolean;
+  collection: string;
+  value_field: string;
 }
 
 interface RootField extends BaseField {

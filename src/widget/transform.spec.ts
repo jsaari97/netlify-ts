@@ -288,6 +288,15 @@ describe("Widget transformation", () => {
         ],
       ]);
     });
+
+    describe('relations', () => {
+      it('should passthrough relations', () => {
+        expect(parse({ name: "name", type: "~posts/some.path", required: false, multiple: true })).toEqual([
+          ["name?: ~posts/some.path[];"],
+          [],
+        ]);
+      })
+    })
   });
 
   describe("typed lists", () => {

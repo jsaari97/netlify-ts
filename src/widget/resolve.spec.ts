@@ -74,7 +74,14 @@ describe("Resolve widget type", () => {
   });
 
   test("relation", () => {
-    expect(resolveType({ name: "name", widget: "relation" })).toEqual("any");
+    expect(
+      resolveType({
+        name: "name",
+        widget: "relation",
+        collection: "collection",
+        value_field: "name.first",
+      }),
+    ).toEqual("~collection/name.first");
   });
 
   test("map", () => {
@@ -320,9 +327,7 @@ describe("Resolve widget type", () => {
 
     it("should resolve numeric options", () => {
       expect(resolveType({ name: "name", widget: "select", options: [1, 2, 3] })).toEqual([
-        1,
-        2,
-        3,
+        1, 2, 3,
       ]);
     });
 

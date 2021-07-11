@@ -4,7 +4,9 @@ export const resolveWidget = (field: Field): Widget => {
   return {
     name: field.name,
     required: field.required !== false,
-    multiple: field.widget === "list" || (field.widget === "select" && !!field.multiple),
+    multiple:
+      field.widget === "list" ||
+      ((field.widget === "select" || field.widget === "relation") && !!field.multiple),
     type: resolveType(field),
   };
 };
@@ -62,8 +64,9 @@ export const resolveType = (field: Field): Widget["type"] => {
     case "object":
     case "root":
       return field.fields?.map(resolveWidget);
-    case "hidden":
     case "relation":
+      return `~${field.collection}/${field.value_field}`;
+    case "hidden":
     default:
       return "any";
   }

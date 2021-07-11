@@ -1,6 +1,6 @@
 import { pullCollection } from "./collection";
 import { appendExport, formatType } from "./output";
-import { resolveWidget, transformType } from "./widget";
+import { resolveRelations, resolveWidget, transformType } from "./widget";
 import { Collection } from "./types";
 
 export const generateTypes = (collections: Collection[]): string => {
@@ -9,9 +9,10 @@ export const generateTypes = (collections: Collection[]): string => {
     .map(resolveWidget)
     .reduce(transformType(), [[], []])
     .flat()
+    .map(resolveRelations)
     .map(formatType)
     .map(appendExport)
     .join("\n\n")
-    .replace(/^/, '/* eslint-disable */\n/* tslint:disable */\n\n')
+    .replace(/^/, "/* eslint-disable */\n/* tslint:disable */\n\n")
     .concat("\n");
 };
