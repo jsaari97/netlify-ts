@@ -457,6 +457,15 @@ describe("Widget transformation", () => {
       ).toEqual([["name: any[];"], []]);
     });
   });
+
+  describe("body", () => {
+    it('should omit fields with name "body"', () => {
+      expect(parse({ name: "body", type: "string", required: true, multiple: false })).toEqual([
+        [],
+        [],
+      ]);
+    });
+  });
 });
 
 describe("Nested list depth", () => {

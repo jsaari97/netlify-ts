@@ -6,12 +6,10 @@ exports[`Output testing should parse kitchen sink correctly 1`] = `
   draft: boolean;
   date: string;
   image?: string;
-  body: string;
 }
 
 export interface faq {
   title: string;
-  body: string;
 }
 
 export interface general_posts {
