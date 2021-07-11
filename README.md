@@ -19,6 +19,7 @@ This package generates a [TypeScript](https://www.typescriptlang.org/) schema of
 - Multi-select and single option values
 - Optional fields
 - Unknown widgets resolve to `any` type
+- Relation fields
 
 # Installation
 
