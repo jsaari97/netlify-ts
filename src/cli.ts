@@ -18,7 +18,7 @@ let spinner: ora.Ora;
 
 export const run = async (): Promise<void> => {
   try {
-    const { input, output = OUTPUT_FILENAME } = args;
+    const { input, output = OUTPUT_FILENAME } = await args;
 
     spinner = ora("Loading config").start();
 
