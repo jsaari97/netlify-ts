@@ -28,10 +28,7 @@ describe("resolveRelation", () => {
   });
 
   it("should resolve object relations", () => {
-    const input = [
-      ...types,
-      "interface posts { title: string; author: ~authors/*; }",
-    ];
+    const input = [...types, "interface posts { title: string; author: ~authors/*; }"];
 
     expect(input.map(resolveRelations)[input.length - 1]).toEqual(
       "interface posts { title: string; author: authors; }",
@@ -50,10 +47,7 @@ describe("resolveRelation", () => {
   });
 
   it("should resolve nested relations", () => {
-    const input = [
-      ...types,
-      "interface posts { title: string; publisher: ~authors/publisher; }",
-    ];
+    const input = [...types, "interface posts { title: string; publisher: ~authors/publisher; }"];
 
     expect(input.map(resolveRelations)[input.length - 1]).toEqual(
       "interface posts { title: string; publisher: string; }",
@@ -61,10 +55,7 @@ describe("resolveRelation", () => {
   });
 
   it("should resolve literal relations", () => {
-    const input = [
-      ...types,
-      "interface posts { title: string; author_status: ~authors/status; }",
-    ];
+    const input = [...types, "interface posts { title: string; author_status: ~authors/status; }"];
 
     expect(input.map(resolveRelations)[input.length - 1]).toEqual(
       "interface posts { title: string; author_status: authors_status_options; }",
