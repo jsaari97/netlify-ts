@@ -12,5 +12,6 @@ export const generateTypes = (collections: Collection[]): string => {
     .map(formatType)
     .map(appendExport)
     .join("\n\n")
+    .replace(/^/, '/* eslint-disable */\n/* tslint:disable */\n\n')
     .concat("\n");
 };

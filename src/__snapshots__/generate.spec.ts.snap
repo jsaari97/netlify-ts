@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Output testing should parse kitchen sink correctly 1`] = `
-"export interface posts {
+"/* eslint-disable */
+/* tslint:disable */
+
+export interface posts {
   title: string;
   draft: boolean;
   date: string;
