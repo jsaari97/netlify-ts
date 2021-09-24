@@ -1,5 +1,5 @@
 import path from "path";
-import { promises as fs } from "fs";
+import fs from "fs";
 import { OUTPUT_FILENAME } from "./constants";
 
 const spacing = "  ";
@@ -13,20 +13,16 @@ export const formatType = (type: string): string => {
 
 export const appendExport = (type: string): string => `export ${type}`;
 
-export const outputFile = async (outputPath: string, data: string): Promise<void> => {
-  try {
-    let fullPath = path.join(process.cwd(), outputPath);
+export const outputFile = (outputPath: string, data: string): void => {
+  let fullPath = path.join(process.cwd(), outputPath);
 
-    if (!path.extname(fullPath)) {
-      fullPath = path.join(fullPath, OUTPUT_FILENAME);
-    }
-
-    if (path.dirname(fullPath) !== process.cwd()) {
-      await fs.mkdir(path.dirname(fullPath), { recursive: true });
-    }
-
-    await fs.writeFile(fullPath, data, "utf8");
-  } catch (error) {
-    return Promise.reject(error);
+  if (!path.extname(fullPath)) {
+    fullPath = path.join(fullPath, OUTPUT_FILENAME);
   }
+
+  if (path.dirname(fullPath) !== process.cwd()) {
+    fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+  }
+
+  fs.writeFileSync(fullPath, data, "utf8");
 };

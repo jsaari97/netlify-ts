@@ -22,20 +22,18 @@ export const run = async (): Promise<void> => {
 
     spinner = ora("Loading config").start();
 
-    const collections = await loadConfig(input);
+    const collections = loadConfig(input);
 
-    spinner.succeed();
-    spinner = ora("Generating types").start();
+    spinner.succeed().start("Generating types");
 
     const types = generateTypes(collections);
 
-    spinner.succeed();
-    spinner = ora("Saving file").start();
+    spinner.succeed().start("Saving file");
 
-    await outputFile(output, types);
+    outputFile(output, types);
 
     spinner.succeed();
-  } catch (error) {
+  } catch (error: any) {
     spinner.fail(error.message);
   }
 };

@@ -1,13 +1,11 @@
 import { appendExport, formatType, outputFile } from "./output";
 import path from "path";
-import { promises as fs } from "fs";
+import fs from "fs";
 import { OUTPUT_FILENAME } from "./constants";
 
 jest.mock("fs", () => ({
-  promises: {
-    writeFile: jest.fn(),
-    mkdir: jest.fn(),
-  },
+  writeFileSync: jest.fn(),
+  mkdirSync: jest.fn(),
 }));
 
 describe("Type formatting", () => {
@@ -31,34 +29,34 @@ describe(`Appending 'export'`, () => {
 });
 
 describe("File outputting", () => {
-  it("should output file", async () => {
-    await outputFile("./test.ts", "dummy data");
+  it("should output file", () => {
+    outputFile("./test.ts", "dummy data");
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
       path.resolve(__dirname, "../test.ts"),
       "dummy data",
       "utf8",
     );
   });
 
-  it("should append filename", async () => {
-    await outputFile("./", "dummy data");
+  it("should append filename", () => {
+    outputFile("./", "dummy data");
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
       path.resolve(__dirname, "../", OUTPUT_FILENAME),
       "dummy data",
       "utf8",
     );
   });
 
-  it("should create directory if it does not exist", async () => {
-    await outputFile("./__404", "dummy data");
+  it("should create directory if it does not exist", () => {
+    outputFile("./__404", "dummy data");
 
     const outputPath = path.resolve(__dirname, "../__404");
 
-    expect(fs.mkdir).toHaveBeenCalledWith(outputPath, { recursive: true });
+    expect(fs.mkdirSync).toHaveBeenCalledWith(outputPath, { recursive: true });
 
-    expect(fs.writeFile).toHaveBeenCalledWith(
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
       path.resolve(outputPath, OUTPUT_FILENAME),
       "dummy data",
       "utf8",
