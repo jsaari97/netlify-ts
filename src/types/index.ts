@@ -1,2 +1,2 @@
-export { Field, Collection } from "./fields";
-export { Widget } from "./widgets";
+export type { Field, Collection } from "./fields";
+export type { Widget } from "./widgets";

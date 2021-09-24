@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
 import { promises as fs } from "fs";
 import path from "path";
-import { Collection } from "./types";
+import type { Collection } from "./types";
 
 interface YamlInput {
   collections?: Collection[];

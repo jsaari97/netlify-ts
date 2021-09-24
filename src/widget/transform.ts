@@ -1,4 +1,4 @@
-import { Widget } from "../types";
+import type { Widget } from "../types";
 
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;

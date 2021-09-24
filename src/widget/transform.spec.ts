@@ -1,4 +1,4 @@
-import { Widget } from "../types";
+import type { Widget } from "../types";
 import { nestedDepth, transformType, wrapEnum, pullType, sortTypes } from "./transform";
 
 describe("Widget transformation", () => {

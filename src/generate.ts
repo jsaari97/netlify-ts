@@ -1,7 +1,7 @@
 import { pullCollection } from "./collection";
 import { appendExport, formatType } from "./output";
 import { resolveRelations, resolveWidget, transformType } from "./widget";
-import { Collection } from "./types";
+import type { Collection } from "./types";
 
 export const generateTypes = (collections: Collection[]): string => {
   return collections

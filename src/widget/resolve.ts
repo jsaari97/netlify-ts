@@ -1,4 +1,4 @@
-import { Field, Widget } from "../types";
+import type { Field, Widget } from "../types";
 
 export const resolveWidget = (field: Field): Widget => {
   return {
