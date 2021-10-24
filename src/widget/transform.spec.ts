@@ -1,8 +1,15 @@
 import type { Widget } from "../types";
-import { nestedDepth, transformType, wrapEnum, pullType, sortTypes } from "./transform";
+import {
+  nestedDepth,
+  transformType,
+  wrapEnum,
+  pullType,
+  sortTypes,
+  TransformState,
+} from "./transform";
 
 describe("Widget transformation", () => {
-  const parse = (widget: Widget, prefix?: string) => transformType(prefix)([[], []], widget);
+  const parse = (widget: Widget, state?: TransformState) => transformType(state)([[], []], widget);
 
   describe("top-level", () => {
     it("should not extract top-level types", () => {
@@ -48,7 +55,7 @@ describe("Widget transformation", () => {
               { name: "active", type: "boolean", required: true, multiple: false },
             ],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["profile: parent_profile;"],
@@ -70,7 +77,7 @@ describe("Widget transformation", () => {
               { name: "lang", type: "string", required: true, multiple: false },
             ],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["snippet: parent_snippet;"],
@@ -92,7 +99,7 @@ describe("Widget transformation", () => {
               { name: "active", type: "boolean", required: true, multiple: false },
             ],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["list: parent_list[];"],
@@ -109,7 +116,7 @@ describe("Widget transformation", () => {
             multiple: true,
             type: "boolean",
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["list: boolean[];"], []]);
     });
@@ -123,7 +130,7 @@ describe("Widget transformation", () => {
             multiple: true,
             type: "boolean?",
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["list?: boolean[];"], []]);
     });
@@ -142,7 +149,7 @@ describe("Widget transformation", () => {
               type: [{ name: "prop", required: true, multiple: false, type: "boolean" }],
             },
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["list: parent_list_item[];"], ["interface parent_list_item { prop: boolean; }"]]);
     });
@@ -156,7 +163,7 @@ describe("Widget transformation", () => {
             multiple: true,
             type: "string",
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["name: string[];"], []]);
     });
@@ -177,7 +184,7 @@ describe("Widget transformation", () => {
               type: "boolean",
             },
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["list: boolean[][];"], []]);
     });
@@ -208,7 +215,7 @@ describe("Widget transformation", () => {
               },
             },
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["child: parent_child_grandchild_item[][];"],
@@ -245,7 +252,7 @@ describe("Widget transformation", () => {
               ],
             },
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["child: parent_child_grandchild[][];"],
@@ -278,7 +285,7 @@ describe("Widget transformation", () => {
               },
             ],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["child: parent_child[];"],
@@ -331,7 +338,7 @@ describe("Widget transformation", () => {
               ],
             ],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["list: (parent_list_one | parent_list_two)[];"],
@@ -381,7 +388,7 @@ describe("Widget transformation", () => {
               ],
             ],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["list: (parent_list_one | parent_list_two)[];"],
@@ -427,7 +434,7 @@ describe("Widget transformation", () => {
             multiple: false,
             type: ["one", "two", "three"],
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([
         ["name: parent_name_options;"],
@@ -446,7 +453,7 @@ describe("Widget transformation", () => {
             required: true,
             multiple: false,
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["name: any;"], []]);
     });
@@ -460,7 +467,7 @@ describe("Widget transformation", () => {
             required: true,
             multiple: true,
           },
-          "parent",
+          { prefix: "parent" },
         ),
       ).toEqual([["name: any[];"], []]);
     });
@@ -471,6 +478,70 @@ describe("Widget transformation", () => {
       expect(parse({ name: "body", type: "string", required: true, multiple: false })).toEqual([
         [],
         [],
+      ]);
+    });
+  });
+
+  describe("'label' option", () => {
+    it("should use singularLabel", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            singularLabel: "User",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", label: true },
+        ),
+      ).toEqual([
+        ["users: parent_User[];"],
+        ["interface parent_User { name: string; active: boolean; }"],
+      ]);
+    });
+
+    it("should use label as fallback", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            label: "Users",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", label: true },
+        ),
+      ).toEqual([
+        ["users: parent_Users[];"],
+        ["interface parent_Users { name: string; active: boolean; }"],
+      ]);
+    });
+
+    it("should use name if no label found", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", label: true },
+        ),
+      ).toEqual([
+        ["users: parent_users[];"],
+        ["interface parent_users { name: string; active: boolean; }"],
       ]);
     });
   });

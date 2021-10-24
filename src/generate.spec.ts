@@ -5,6 +5,12 @@ describe("Output testing", () => {
   it("should parse kitchen sink correctly", () => {
     const collections = loadConfig("kitchen-sink.yml");
 
-    expect(generateTypes(collections)).toMatchSnapshot();
+    expect(generateTypes(collections, { label: false })).toMatchSnapshot();
+  });
+
+  it("should parse kitchen sink with label option", () => {
+    const collections = loadConfig("kitchen-sink.yml");
+
+    expect(generateTypes(collections, { label: true })).toMatchSnapshot();
   });
 });

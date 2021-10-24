@@ -11,5 +11,7 @@ export interface Widget {
   name: string;
   required: boolean;
   multiple: boolean;
+  label?: string;
+  singularLabel?: string;
   type: WidgetType;
 }

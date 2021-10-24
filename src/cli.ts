@@ -4,21 +4,28 @@ import { OUTPUT_FILENAME } from "./constants";
 import { outputFile } from "./output";
 import { loadConfig } from "./input";
 import { generateTypes } from "./generate";
+import type { NetlifyTsOptions } from "./types";
 
-interface CommandArguments {
+interface CommandArguments extends NetlifyTsOptions {
   input: string;
   output?: string;
 }
 
 const args = yargs
-  .command<CommandArguments>("$0 <input> [output]", "Output generated types from input")
+  .command<CommandArguments>("$0 [options] <input> [output]", "Output generated types from input")
+  .option("label", {
+    demandOption: false,
+    default: true,
+    describe: `use 'label_singular' or 'label' as interface name`,
+    type: "boolean",
+  })
   .demandCommand(2).argv;
 
 let spinner: ora.Ora;
 
 export const run = async (): Promise<void> => {
   try {
-    const { input, output = OUTPUT_FILENAME } = await args;
+    const { input, output = OUTPUT_FILENAME, label } = await args;
 
     spinner = ora("Loading config").start();
 
@@ -26,7 +33,7 @@ export const run = async (): Promise<void> => {
 
     spinner.succeed().start("Generating types");
 
-    const types = generateTypes(collections);
+    const types = generateTypes(collections, { label });
 
     spinner.succeed().start("Saving file");
 

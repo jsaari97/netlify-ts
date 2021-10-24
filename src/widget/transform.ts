@@ -1,5 +1,7 @@
 import type { Widget } from "../types";
 
+export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
+
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
 
@@ -57,12 +59,22 @@ type TypeArray = [string[], string[]];
 
 const empty: TypeArray = [[], []];
 
+export interface TransformState {
+  prefix?: string;
+  label?: boolean;
+}
+
 export const transformType =
-  (prefix = "") =>
+  ({ prefix = "", label = false }: TransformState = {}) =>
   (types: TypeArray, widget: Widget): TypeArray => {
     const required = !widget.required ? "?" : "";
     const multiple = widget.multiple ? "[]" : "";
-    const name = prefix ? `${prefix}_${widget.name}` : widget.name;
+
+    const widgetName = label
+      ? (widget.singularLabel || widget.label || widget.name).replace(/\s./gi, toCamelCase)
+      : widget.name;
+
+    const name = prefix ? `${prefix}_${widgetName}` : widgetName;
 
     if (!Array.isArray(widget.type)) {
       // if widget name is `body`
@@ -82,7 +94,7 @@ export const transformType =
 
       // single field list logic
 
-      const child = transformType(name)(empty, {
+      const child = transformType({ prefix: name, label })(empty, {
         ...widget.type,
         multiple: widget.multiple,
         required: widget.required,
@@ -98,7 +110,7 @@ export const transformType =
           ...types[0],
           ...child[0].map((prop) =>
             prop
-              .replace(propRegex, `${widget.name}${optional ? "?" : ""}`)
+              .replace(propRegex, `${widgetName}${optional ? "?" : ""}`)
               .replace("[]", "[]".repeat(depth)),
           ),
         ],
@@ -128,7 +140,10 @@ export const transformType =
       // typed list
       if (Array.isArray(iterator[0])) {
         const [typeKey, ...objects] = iterator[0];
-        const [names, interfaces] = (objects as Widget[]).reduce(transformType(name), empty);
+        const [names, interfaces] = (objects as Widget[]).reduce(
+          transformType({ prefix: name, label }),
+          empty,
+        );
         const typeNames = (objects as Widget[]).map((w) => w.name);
 
         const pattern = new RegExp(`(${typeNames.map((w) => `${name}_${w}`).join("|")}) {`);
@@ -149,18 +164,21 @@ export const transformType =
       // root level collection
       if (!prefix) {
         const [fields, interfaces] = (iterator as Widget[]).reduce(
-          transformType(widget.name),
+          transformType({ prefix: widgetName, label }),
           empty,
         );
 
         return [
           types[0],
-          [...types[1], ...interfaces, `interface ${widget.name} { ${fields.join(" ")} }`],
+          [...types[1], ...interfaces, `interface ${widgetName} { ${fields.join(" ")} }`],
         ];
       }
 
       // object field
-      const [fields, interfaces] = (iterator as Widget[]).reduce(transformType(name), [[], []]);
+      const [fields, interfaces] = (iterator as Widget[]).reduce(
+        transformType({ prefix: name, label }),
+        [[], []],
+      );
 
       return [
         [...types[0], `${widget.name}${required}: ${name}${multiple};`],

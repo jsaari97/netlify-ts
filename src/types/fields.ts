@@ -1,6 +1,8 @@
 interface BaseField {
   name: string;
   required?: boolean;
+  label?: string;
+  label_singular?: string;
 }
 
 interface CommonField extends BaseField {

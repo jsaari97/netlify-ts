@@ -1,13 +1,16 @@
 import { pullCollection } from "./collection";
 import { appendExport, formatType } from "./output";
 import { resolveRelations, resolveWidget, transformType } from "./widget";
-import type { Collection } from "./types";
+import type { Collection, NetlifyTsOptions } from "./types";
 
-export const generateTypes = (collections: Collection[]): string => {
+export const generateTypes = (
+  collections: Collection[],
+  options: NetlifyTsOptions = {},
+): string => {
   return collections
     .flatMap(pullCollection)
     .map(resolveWidget)
-    .reduce(transformType(), [[], []])
+    .reduce(transformType({ label: !!options.label }), [[], []])
     .flat()
     .map(resolveRelations)
     .map(formatType)

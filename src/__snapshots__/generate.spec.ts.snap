@@ -188,3 +188,191 @@ export interface kitchenSink {
 }
 "
 `;
+
+exports[`Output testing should parse kitchen sink with label option 1`] = `
+"/* eslint-disable */
+/* tslint:disable */
+
+export interface Post {
+  title: string;
+  draft: boolean;
+  date: string;
+  image?: string;
+}
+
+export interface FAQ {
+  title: string;
+}
+
+export interface SiteSettings_PostSettings {
+  front_limit: string;
+  author: string;
+  thumb?: string;
+}
+
+export interface SiteSettings {
+  site_title: string;
+  posts: SiteSettings_PostSettings;
+}
+
+export interface Authors_Author {
+  name: string;
+  description: string;
+}
+
+export interface Authors {
+  authors: Authors_Author[];
+}
+
+export type KitchenSink_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSink_SelectMultiple_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSink_SelectNumeric_options = 1 | 2 | 3;
+
+export type KitchenSink_Object_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSink_Object {
+  post: any;
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: KitchenSink_Object_Select_options;
+}
+
+export type KitchenSink_List_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSink_List_Object_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSink_List_Object_List_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSink_List_Object_List_Object_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSink_List_Object_List_Object {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: KitchenSink_List_Object_List_Object_Select_options;
+}
+
+export interface KitchenSink_List_Object_List {
+  post: any;
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: KitchenSink_List_Object_List_Select_options;
+  hidden: any;
+  object: KitchenSink_List_Object_List_Object;
+}
+
+export interface KitchenSink_List_Object {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: KitchenSink_List_Object_Select_options;
+  list: KitchenSink_List_Object_List[];
+}
+
+export interface KitchenSink_List {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: any;
+  select: KitchenSink_List_Select_options;
+  object: KitchenSink_List_Object;
+}
+
+export interface KitchenSink_TypedList_Type1Object {
+  string: string;
+  boolean: boolean;
+  text: string;
+}
+
+export interface KitchenSink_TypedList_Type2Object_NestedObject {
+  number: string;
+}
+
+export type KitchenSink_TypedList_Type2Object_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSink_TypedList_Type2Object {
+  type: \\"type_2_object\\";
+  number: string;
+  nested: KitchenSink_TypedList_Type2Object_NestedObject;
+  select: KitchenSink_TypedList_Type2Object_Select_options;
+  datetime: string;
+  markdown: string;
+}
+
+export interface KitchenSink_TypedList_Type3Object {
+  type: \\"type_3_object\\";
+  date: string;
+  image: string;
+  file: any;
+}
+
+export interface KitchenSink_CodeBlock {
+  code: string;
+  lang: string;
+}
+
+export interface KitchenSink_CodeAltBlock {
+  alt: string;
+  typescript: string;
+}
+
+export interface KitchenSink {
+  post: any;
+  title: string;
+  boolean: boolean;
+  map: string;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  color: string;
+  colorEditable: string;
+  image: string;
+  file: any;
+  select: KitchenSink_Select_options;
+  select_multiple: KitchenSink_SelectMultiple_options[];
+  select_numeric: KitchenSink_SelectNumeric_options;
+  hidden: any;
+  object: KitchenSink_Object;
+  list: KitchenSink_List[];
+  typed_list: (KitchenSink_TypedList_Type1Object | KitchenSink_TypedList_Type2Object | KitchenSink_TypedList_Type3Object)[];
+  code: KitchenSink_CodeBlock;
+  code_alt: KitchenSink_CodeAltBlock;
+  snippet: string;
+}
+"
+`;

@@ -4,6 +4,8 @@ export const resolveWidget = (field: Field): Widget => {
   return {
     name: field.name,
     required: field.required !== false,
+    label: field.label,
+    singularLabel: field.label_singular,
     multiple:
       field.widget === "list" ||
       ((field.widget === "select" || field.widget === "relation") && !!field.multiple),
