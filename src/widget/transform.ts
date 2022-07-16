@@ -1,5 +1,10 @@
 import type { Widget } from "../types";
 
+export const getWidgetName = (widget: Widget, useLabel: boolean): string =>
+  useLabel
+    ? (widget.singularLabel || widget.label || widget.name).replace(/\s./gi, toCamelCase)
+    : widget.name;
+
 export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
 
 export const wrapEnum = (item: number | string): string =>
@@ -70,9 +75,7 @@ export const transformType =
     const required = !widget.required ? "?" : "";
     const multiple = widget.multiple ? "[]" : "";
 
-    const widgetName = label
-      ? (widget.singularLabel || widget.label || widget.name).replace(/\s./gi, toCamelCase)
-      : widget.name;
+    const widgetName = getWidgetName(widget, label);
 
     const name = prefix ? `${prefix}_${widgetName}` : widgetName;
 
@@ -144,15 +147,17 @@ export const transformType =
           transformType({ prefix: name, label }),
           empty,
         );
-        const typeNames = (objects as Widget[]).map((w) => w.name);
 
-        const pattern = new RegExp(`(${typeNames.map((w) => `${name}_${w}`).join("|")}) {`);
+        const pattern = new RegExp(
+          `(${(objects as Widget[]).map((w) => `${name}_${getWidgetName(w, label)}`).join("|")}) {`,
+        );
 
         // sort typed lists last and splice rest
         const rest = interfaces
           .sort(sortTypes(pattern))
           .splice(0, interfaces.length - names.length);
 
+        const typeNames = (objects as Widget[]).map((w) => w.name);
         const typeValues = zip(typeNames.map(wrapEnum));
 
         return [

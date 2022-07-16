@@ -151,6 +151,11 @@ export interface kitchenSink_typed_list_type_3_object {
   file: any;
 }
 
+export interface kitchenSink_typed_list_type_4_object {
+  type: \\"type_4_object\\";
+  name: string;
+}
+
 export interface kitchenSink_code {
   code: string;
   lang: string;
@@ -181,7 +186,7 @@ export interface kitchenSink {
   hidden: any;
   object: kitchenSink_object;
   list: kitchenSink_list[];
-  typed_list: (kitchenSink_typed_list_type_1_object | kitchenSink_typed_list_type_2_object | kitchenSink_typed_list_type_3_object)[];
+  typed_list: (kitchenSink_typed_list_type_1_object | kitchenSink_typed_list_type_2_object | kitchenSink_typed_list_type_3_object | kitchenSink_typed_list_type_4_object)[];
   code: kitchenSink_code;
   code_alt: kitchenSink_code_alt;
   snippet: string;
@@ -311,17 +316,18 @@ export interface KitchenSink_List {
   object: KitchenSink_List_Object;
 }
 
-export interface KitchenSink_TypedList_Type1Object {
-  string: string;
-  boolean: boolean;
-  text: string;
-}
-
 export interface KitchenSink_TypedList_Type2Object_NestedObject {
   number: string;
 }
 
 export type KitchenSink_TypedList_Type2Object_Select_options = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSink_TypedList_Type1Object {
+  type: \\"type_1_object\\";
+  string: string;
+  boolean: boolean;
+  text: string;
+}
 
 export interface KitchenSink_TypedList_Type2Object {
   type: \\"type_2_object\\";
@@ -332,11 +338,16 @@ export interface KitchenSink_TypedList_Type2Object {
   markdown: string;
 }
 
-export interface KitchenSink_TypedList_Type3Object {
+export interface KitchenSink_TypedList_type3Object {
   type: \\"type_3_object\\";
   date: string;
   image: string;
   file: any;
+}
+
+export interface KitchenSink_TypedList_type_4_object {
+  type: \\"type_4_object\\";
+  name: string;
 }
 
 export interface KitchenSink_CodeBlock {
@@ -369,7 +380,7 @@ export interface KitchenSink {
   hidden: any;
   object: KitchenSink_Object;
   list: KitchenSink_List[];
-  typed_list: (KitchenSink_TypedList_Type1Object | KitchenSink_TypedList_Type2Object | KitchenSink_TypedList_Type3Object)[];
+  typed_list: (KitchenSink_TypedList_Type1Object | KitchenSink_TypedList_Type2Object | KitchenSink_TypedList_type3Object | KitchenSink_TypedList_type_4_object)[];
   code: KitchenSink_CodeBlock;
   code_alt: KitchenSink_CodeAltBlock;
   snippet: string;
