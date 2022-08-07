@@ -12,14 +12,13 @@ interface CommandArguments extends NetlifyTsOptions {
 }
 
 const args = yargs
-  .command<CommandArguments>("$0 [options] <input> [output]", "Output generated types from input")
+  .command<CommandArguments>("* <input> [output]", "Output generated types from input")
   .option("label", {
     demandOption: false,
     default: true,
     describe: `use 'label_singular' or 'label' as interface name`,
     type: "boolean",
-  })
-  .demandCommand(2).argv;
+  }).argv;
 
 let spinner: ora.Ora;
 
