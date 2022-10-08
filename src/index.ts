@@ -1,8 +1,11 @@
 import { generateTypes } from "./generate";
-import { loadConfig } from "./input";
+import { NetlifyCMSConfig, loadConfig } from "./input";
 import type { NetlifyTsOptions } from "./types";
 
-export const createNetlifyTypes = (input: string, options: NetlifyTsOptions = {}): string => {
+export const createNetlifyTypes = (
+  input: string | NetlifyCMSConfig,
+  options: NetlifyTsOptions = {},
+): string => {
   const collections = loadConfig(input);
 
   return generateTypes(collections, options);

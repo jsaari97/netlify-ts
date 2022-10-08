@@ -1,10 +1,24 @@
-import { loadConfig } from "./input";
+import yaml from "js-yaml";
+import fs from "fs";
+import { NetlifyCMSConfig, loadConfig } from "./input";
+
+const mockConfigObject = yaml.load(
+  fs.readFileSync("kitchen-sink.yml", "utf-8"),
+) as NetlifyCMSConfig;
 
 describe("Load configuration", () => {
-  it("should return collections", () => {
+  it("should return collections from yaml config file", () => {
     const result = loadConfig("kitchen-sink.yml");
 
     expect(result.length).toBeDefined();
+    expect(result).toEqual(mockConfigObject.collections);
+  });
+
+  it("should return collections from config object", () => {
+    const result = loadConfig(mockConfigObject);
+
+    expect(result.length).toBeDefined();
+    expect(result).toEqual(mockConfigObject.collections);
   });
 
   it("should throw if invalid filetype", () => {
@@ -14,6 +28,11 @@ describe("Load configuration", () => {
 
   it("should throw if malformed config file", () => {
     const t = () => loadConfig(".github/workflows/build-test.yml");
-    expect(t).toThrow("Failed loading collections from config file");
+    expect(t).toThrow("Failed loading collections from config");
+  });
+
+  it("should throw if malformed config object", () => {
+    const t = () => loadConfig({ foo: "bar" } as NetlifyCMSConfig);
+    expect(t).toThrow("Failed loading collections from config");
   });
 });

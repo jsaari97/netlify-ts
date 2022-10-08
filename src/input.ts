@@ -3,21 +3,29 @@ import fs from "fs";
 import path from "path";
 import type { Collection } from "./types";
 
-interface YamlInput {
+export interface NetlifyCMSConfig {
   collections?: Collection[];
 }
 
-export const loadConfig = (filePath: string): Collection[] => {
-  if (!path.extname(filePath).match(/\.ya?ml$/)) {
-    throw new Error("Invalid filetype, must be an yaml file");
+export const loadConfig = (config: string | NetlifyCMSConfig): Collection[] => {
+  let data;
+
+  if (typeof config === "object") {
+    data = config;
   }
 
-  const file = fs.readFileSync(path.resolve(process.cwd(), filePath), "utf8");
+  if (typeof config === "string") {
+    if (!path.extname(config).match(/\.ya?ml$/)) {
+      throw new Error("Invalid filetype, must be an yaml file");
+    }
 
-  const data = yaml.load(file) as YamlInput;
+    const file = fs.readFileSync(path.resolve(process.cwd(), config), "utf8");
+
+    data = yaml.load(file) as NetlifyCMSConfig;
+  }
 
   if (typeof data !== "object" || !data.collections) {
-    throw new Error("Failed loading collections from config file");
+    throw new Error("Failed loading collections from config");
   }
 
   return data.collections;
