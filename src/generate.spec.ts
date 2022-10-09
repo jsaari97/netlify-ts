@@ -19,4 +19,10 @@ describe("Output testing", () => {
 
     expect(generateTypes(collections, { capitalize: true })).toMatchSnapshot();
   });
+
+  it("should support custom delimiter for type names", () => {
+    const collections = loadConfig("kitchen-sink.yml");
+
+    expect(generateTypes(collections, { delimiter: "-" })).toMatchSnapshot();
+  });
 });
