@@ -6,6 +6,7 @@ import {
   pullType,
   sortTypes,
   TransformState,
+  toCapitalized,
 } from "./transform";
 
 describe("Widget transformation", () => {
@@ -546,53 +547,48 @@ describe("Widget transformation", () => {
     });
   });
 
-  it("should parse typed lists with labels", () => {
-    expect(
-      parse(
-        {
-          name: "list",
-          label: "my_list",
-          required: true,
-          multiple: true,
-          type: [
-            [
-              "__typename",
-              {
-                name: "type_one",
-                label: "type one",
-                required: true,
-                multiple: false,
-                type: [
-                  {
-                    name: "key",
-                    singularLabel: "my key",
-                    type: "string",
-                    required: true,
-                    multiple: false,
-                  },
-                ],
-              },
-              {
-                name: "two",
-                label: "type_two",
-                required: true,
-                multiple: false,
-                type: [
-                  { name: "id", singularLabel: "my_id", type: "number", required: true, multiple: false },
-                ],
-              },
+  describe("'capitalize' option", () => {
+    it("should capitalize names", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            singularLabel: "User",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
             ],
-          ],
-        },
-        { prefix: "parent", label: true },
-      ),
-    ).toEqual([
-      ["list: (parent_my_list_typeOne | parent_my_list_type_two)[];"],
-      [
-        `interface parent_my_list_typeOne { __typename: "type_one"; key: string; }`,
-        `interface parent_my_list_type_two { __typename: "two"; id: number; }`,
-      ],
-    ]);
+          },
+          { prefix: "parent", capitalize: true },
+        ),
+      ).toEqual([
+        ["users: Parent_Users[];"],
+        ["interface Parent_Users { name: string; active: boolean; }"],
+      ]);
+    });
+
+    it("should work together with label option", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            singularLabel: "user",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", capitalize: true, label: true },
+        ),
+      ).toEqual([
+        ["users: Parent_User[];"],
+        ["interface Parent_User { name: string; active: boolean; }"],
+      ]);
+    });
   });
 });
 
