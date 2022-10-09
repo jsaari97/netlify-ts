@@ -77,17 +77,18 @@ export interface TransformState {
   prefix?: string;
   label?: boolean;
   capitalize?: boolean;
+  delimiter?: string;
 }
 
 export const transformType =
-  ({ prefix = "", label = false, capitalize = false }: TransformState = {}) =>
+  ({ prefix = "", label = false, capitalize = false, delimiter = "_" }: TransformState = {}) =>
   (types: TypeArray, widget: Widget): TypeArray => {
     const required = !widget.required ? "?" : "";
     const multiple = widget.multiple ? "[]" : "";
 
     const widgetName = getWidgetName(widget, label, capitalize);
 
-    const name = getName(prefix ? `${prefix}_${widgetName}` : widgetName, capitalize);
+    const name = getName(prefix ? `${prefix}${delimiter}${widgetName}` : widgetName, capitalize);
 
     if (!Array.isArray(widget.type)) {
       // if widget name is `body`
@@ -139,7 +140,7 @@ export const transformType =
 
       // check if enum list
       if (typeof iterator[0] === "string" || typeof iterator[0] === "number") {
-        const enumName = getName(`${name}_options`, capitalize);
+        const enumName = getName(`${name}${delimiter}options`, capitalize);
         return [
           [...types[0], `${widget.name}${required}: ${enumName}${multiple};`],
           [
@@ -153,13 +154,13 @@ export const transformType =
       if (Array.isArray(iterator[0])) {
         const [typeKey, ...objects] = iterator[0];
         const [names, interfaces] = (objects as Widget[]).reduce(
-          transformType({ prefix: name, label, capitalize }),
+          transformType({ prefix: name, label, capitalize, delimiter }),
           empty,
         );
 
         const pattern = new RegExp(
           `(${(objects as Widget[])
-            .map((w) => `${name}_${getWidgetName(w, label, capitalize)}`)
+            .map((w) => `${name}${delimiter}${getWidgetName(w, label, capitalize)}`)
             .join("|")}) {`,
         );
 
@@ -180,7 +181,7 @@ export const transformType =
       // root level collection
       if (!prefix) {
         const [fields, interfaces] = (iterator as Widget[]).reduce(
-          transformType({ prefix: widgetName, label, capitalize }),
+          transformType({ prefix: widgetName, label, capitalize, delimiter }),
           empty,
         );
 
@@ -192,7 +193,7 @@ export const transformType =
 
       // object field
       const [fields, interfaces] = (iterator as Widget[]).reduce(
-        transformType({ prefix: name, label, capitalize }),
+        transformType({ prefix: name, label, capitalize, delimiter }),
         [[], []],
       );
 

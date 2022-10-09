@@ -591,6 +591,29 @@ describe("Widget transformation", () => {
     });
   });
 
+  describe("'delimiter' option", () => {
+    it("should customize the name delimiter", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            singularLabel: "User",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", delimiter: "-" },
+        ),
+      ).toEqual([
+        ["users: parent-users[];"],
+        ["interface parent-users { name: string; active: boolean; }"],
+      ]);
+    });
+  });
+
   it("should parse typed lists with labels", () => {
     expect(
       parse(
