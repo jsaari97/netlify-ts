@@ -13,4 +13,10 @@ describe("Output testing", () => {
 
     expect(generateTypes(collections, { label: true })).toMatchSnapshot();
   });
+
+  it("should support capitalization of type names", () => {
+    const collections = loadConfig("kitchen-sink.yml");
+
+    expect(generateTypes(collections, { capitalize: true })).toMatchSnapshot();
+  });
 });

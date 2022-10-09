@@ -10,7 +10,7 @@ export const generateTypes = (
   return collections
     .flatMap(pullCollection)
     .map(resolveWidget)
-    .reduce(transformType({ label: !!options.label }), [[], []])
+    .reduce(transformType({ label: !!options.label, capitalize: !!options.capitalize }), [[], []])
     .flat()
     .map(resolveRelations)
     .map(formatType)
