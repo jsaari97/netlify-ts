@@ -7,6 +7,9 @@ export const getWidgetName = (widget: Widget, useLabel: boolean): string =>
 
 export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
 
+export const toCapitalized = (str: string) =>
+  str.replace(/(^|[\s-_])(\w)/g, (match, separator, char) => `${separator}${char.toUpperCase()}`);
+
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
 

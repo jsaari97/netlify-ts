@@ -648,3 +648,25 @@ describe("Pull typename", () => {
     expect(pullType("one: parent_list_one;")).toEqual("parent_list_one");
   });
 });
+
+describe("Capitalization", () => {
+  it("should capitalize words separated by spaces", () => {
+    const str = "space separated string";
+    expect(toCapitalized(str)).toBe("Space Separated String");
+  });
+
+  it("should capitalize words separated by dashes", () => {
+    const str = "dash-separated-string";
+    expect(toCapitalized(str)).toBe("Dash-Separated-String");
+  });
+
+  it("should capitalize words separated by underscores", () => {
+    const str = "underscore_separated_string";
+    expect(toCapitalized(str)).toBe("Underscore_Separated_String");
+  });
+
+  it("should handle mixed separators", () => {
+    const str = "string with-mixed_separators";
+    expect(toCapitalized(str)).toBe("String With-Mixed_Separators");
+  });
+});
