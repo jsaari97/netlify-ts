@@ -11,13 +11,7 @@ export const loadConfig = (config: string | NetlifyCMSConfig): Collection[] => {
   }
 
   if (typeof config === "string") {
-    if (!path.extname(config).match(/\.ya?ml$/)) {
-      throw new Error("Invalid filetype, must be an yaml file");
-    }
-
-    const file = fs.readFileSync(path.resolve(process.cwd(), config), "utf8");
-
-    data = yaml.load(file) as NetlifyCMSConfig;
+    data = loadConfigFile(config);
   }
 
   if (typeof data !== "object" || !data.collections) {
@@ -25,4 +19,14 @@ export const loadConfig = (config: string | NetlifyCMSConfig): Collection[] => {
   }
 
   return data.collections;
+};
+
+const loadConfigFile = (fileName: string): NetlifyCMSConfig => {
+  if (!path.extname(fileName).match(/\.ya?ml$/)) {
+    throw new Error("Invalid filetype, must be an yaml file");
+  }
+
+  const file = fs.readFileSync(path.resolve(process.cwd(), fileName), "utf8");
+
+  return yaml.load(file) as NetlifyCMSConfig;
 };
