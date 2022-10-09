@@ -69,13 +69,30 @@ netlify-ts public/admin/config.yml src/my-types.ts
 
 In case the CLI doesn't suit your project workflow or you need to invoke the type generation inside your code, the project exposes both a `createNetlifyTypes` and `createNetlifyTypesAsync` function that returns the generated type file as a string.
 
-Sync
+### Config file
+
 ```javascript
 const fs = require("fs");
 const { createNetlifyTypes } = require("netlify-ts");
 
 function main() {
   const types = createNetlifyTypes("public/admin/config.yml");
+  fs.writeFileSync("my-types.ts", types);
+}
+
+main();
+```
+
+### Config object
+
+```javascript
+const fs = require("fs");
+const { createNetlifyTypes } = require("netlify-ts");
+
+const cmsConfig = require("./config");
+
+function main() {
+  const types = createNetlifyTypes(cmsConfig);
   fs.writeFileSync("my-types.ts", types);
 }
 
