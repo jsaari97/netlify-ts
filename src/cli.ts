@@ -24,13 +24,19 @@ const args = yargs
     default: false,
     describe: "capitalize type names",
     type: "boolean",
+  })
+  .option("delimiter", {
+    demandOption: false,
+    default: "_",
+    describe: "type name delimiter. e.g. 'Posts_Author'",
+    type: "string",
   }).argv;
 
 let spinner: ora.Ora;
 
 export const run = async (): Promise<void> => {
   try {
-    const { input, output = OUTPUT_FILENAME, label, capitalize } = await args;
+    const { input, output = OUTPUT_FILENAME, label, capitalize, delimiter } = await args;
 
     spinner = ora("Loading config").start();
 
@@ -38,7 +44,7 @@ export const run = async (): Promise<void> => {
 
     spinner.succeed().start("Generating types");
 
-    const types = generateTypes(collections, { label, capitalize });
+    const types = generateTypes(collections, { label, capitalize, delimiter });
 
     spinner.succeed().start("Saving file");
 
