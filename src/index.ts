@@ -12,7 +12,7 @@ export const createNetlifyTypes = (
 };
 
 export const createNetlifyTypesAsync = async (
-  input: string,
+  input: string | NetlifyCMSConfig,
   options?: NetlifyTsOptions,
 ): Promise<string> => {
   try {
