@@ -18,13 +18,19 @@ const args = yargs
     default: true,
     describe: `use 'label_singular' or 'label' as interface name`,
     type: "boolean",
+  })
+  .option("capitalize", {
+    demandOption: false,
+    default: false,
+    describe: "capitalize type names",
+    type: "boolean",
   }).argv;
 
 let spinner: ora.Ora;
 
 export const run = async (): Promise<void> => {
   try {
-    const { input, output = OUTPUT_FILENAME, label } = await args;
+    const { input, output = OUTPUT_FILENAME, label, capitalize } = await args;
 
     spinner = ora("Loading config").start();
 
@@ -32,7 +38,7 @@ export const run = async (): Promise<void> => {
 
     spinner.succeed().start("Generating types");
 
-    const types = generateTypes(collections, { label });
+    const types = generateTypes(collections, { label, capitalize });
 
     spinner.succeed().start("Saving file");
 
