@@ -545,6 +545,61 @@ describe("Widget transformation", () => {
         ["interface parent_users { name: string; active: boolean; }"],
       ]);
     });
+
+    it("should parse typed lists with labels", () => {
+      expect(
+        parse(
+          {
+            name: "list",
+            label: "my_list",
+            required: true,
+            multiple: true,
+            type: [
+              [
+                "__typename",
+                {
+                  name: "type_one",
+                  label: "type one",
+                  required: true,
+                  multiple: false,
+                  type: [
+                    {
+                      name: "key",
+                      singularLabel: "my key",
+                      type: "string",
+                      required: true,
+                      multiple: false,
+                    },
+                  ],
+                },
+                {
+                  name: "two",
+                  label: "type_two",
+                  required: true,
+                  multiple: false,
+                  type: [
+                    {
+                      name: "id",
+                      singularLabel: "my_id",
+                      type: "number",
+                      required: true,
+                      multiple: false,
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+          { prefix: "parent", label: true },
+        ),
+      ).toEqual([
+        ["list: (parent_my_list_typeOne | parent_my_list_type_two)[];"],
+        [
+          `interface parent_my_list_typeOne { __typename: "type_one"; key: string; }`,
+          `interface parent_my_list_type_two { __typename: "two"; id: number; }`,
+        ],
+      ]);
+    });
   });
 
   describe("'capitalize' option", () => {
