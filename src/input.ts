@@ -1,11 +1,7 @@
 import yaml from "js-yaml";
 import fs from "fs";
 import path from "path";
-import type { Collection } from "./types";
-
-export interface NetlifyCMSConfig {
-  collections?: Collection[];
-}
+import type { Collection, NetlifyCMSConfig } from "./types";
 
 export const loadConfig = (config: string | NetlifyCMSConfig): Collection[] => {
   let data;

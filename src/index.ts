@@ -1,6 +1,6 @@
 import { generateTypes } from "./generate";
-import { NetlifyCMSConfig, loadConfig } from "./input";
-import type { NetlifyTsOptions } from "./types";
+import { loadConfig } from "./input";
+import type { NetlifyCMSConfig, NetlifyTsOptions } from "./types";
 
 export const createNetlifyTypes = (
   input: string | NetlifyCMSConfig,
