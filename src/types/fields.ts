@@ -40,6 +40,11 @@ interface ImageField extends BaseField {
   allow_multiple?: boolean;
 }
 
+interface FileField extends BaseField {
+  widget: "file";
+  allow_multiple?: boolean;
+}
+
 interface SelectField extends BaseField {
   widget: "select";
   multiple?: boolean;
@@ -69,6 +74,7 @@ export type Field =
   | ListField
   | NumberField
   | ImageField
+  | FileField
   | CodeField
   | SelectField
   | ObjectField
