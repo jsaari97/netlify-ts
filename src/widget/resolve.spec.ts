@@ -73,6 +73,10 @@ describe("Resolve widget type", () => {
     expect(resolveType({ name: "name", widget: "markdown" })).toEqual("string");
   });
 
+  test("file", () => {
+    expect(resolveType({ name: "name", widget: "file" })).toEqual("string");
+  });
+
   test("relation", () => {
     expect(
       resolveType({
