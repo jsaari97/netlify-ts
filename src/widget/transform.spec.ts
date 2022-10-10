@@ -6,6 +6,7 @@ import {
   pullType,
   sortTypes,
   TransformState,
+  toCapitalized,
 } from "./transform";
 
 describe("Widget transformation", () => {
@@ -546,6 +547,50 @@ describe("Widget transformation", () => {
     });
   });
 
+  describe("'capitalize' option", () => {
+    it("should capitalize names", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            singularLabel: "User",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", capitalize: true },
+        ),
+      ).toEqual([
+        ["users: Parent_Users[];"],
+        ["interface Parent_Users { name: string; active: boolean; }"],
+      ]);
+    });
+
+    it("should work together with label option", () => {
+      expect(
+        parse(
+          {
+            name: "users",
+            required: true,
+            multiple: true,
+            singularLabel: "user",
+            type: [
+              { name: "name", type: "string", required: true, multiple: false },
+              { name: "active", type: "boolean", required: true, multiple: false },
+            ],
+          },
+          { prefix: "parent", capitalize: true, label: true },
+        ),
+      ).toEqual([
+        ["users: Parent_User[];"],
+        ["interface Parent_User { name: string; active: boolean; }"],
+      ]);
+    });
+  });
+
   it("should parse typed lists with labels", () => {
     expect(
       parse(
@@ -578,7 +623,13 @@ describe("Widget transformation", () => {
                 required: true,
                 multiple: false,
                 type: [
-                  { name: "id", singularLabel: "my_id", type: "number", required: true, multiple: false },
+                  {
+                    name: "id",
+                    singularLabel: "my_id",
+                    type: "number",
+                    required: true,
+                    multiple: false,
+                  },
                 ],
               },
             ],
@@ -646,5 +697,27 @@ describe("Type sorting", () => {
 describe("Pull typename", () => {
   it("should pull type name", () => {
     expect(pullType("one: parent_list_one;")).toEqual("parent_list_one");
+  });
+});
+
+describe("Capitalization", () => {
+  it("should capitalize words separated by spaces", () => {
+    const str = "space separated string";
+    expect(toCapitalized(str)).toBe("Space Separated String");
+  });
+
+  it("should capitalize words separated by dashes", () => {
+    const str = "dash-separated-string";
+    expect(toCapitalized(str)).toBe("Dash-Separated-String");
+  });
+
+  it("should capitalize words separated by underscores", () => {
+    const str = "underscore_separated_string";
+    expect(toCapitalized(str)).toBe("Underscore_Separated_String");
+  });
+
+  it("should handle mixed separators", () => {
+    const str = "string with-mixed_separators";
+    expect(toCapitalized(str)).toBe("String With-Mixed_Separators");
   });
 });
