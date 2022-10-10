@@ -635,7 +635,7 @@ export interface kitchenSink-object {
   datetime: string;
   date: string;
   image: string;
-  file: any;
+  file: string;
   select: kitchenSink-object-select-options;
 }
 
@@ -656,7 +656,7 @@ export interface kitchenSink-list-object-list-object {
   datetime: string;
   date: string;
   image: string;
-  file: any;
+  file: string;
   select: kitchenSink-list-object-list-object-select-options;
 }
 
@@ -670,7 +670,7 @@ export interface kitchenSink-list-object-list {
   datetime: string;
   date: string;
   image: string;
-  file: any;
+  file: string;
   select: kitchenSink-list-object-list-select-options;
   hidden: any;
   object: kitchenSink-list-object-list-object;
@@ -685,7 +685,7 @@ export interface kitchenSink-list-object {
   datetime: string;
   date: string;
   image: string;
-  file: any;
+  file: string;
   select: kitchenSink-list-object-select-options;
   list: kitchenSink-list-object-list[];
 }
@@ -699,7 +699,7 @@ export interface kitchenSink-list {
   datetime: string;
   date: string;
   image: string;
-  file: any;
+  file: string;
   select: kitchenSink-list-select-options;
   object: kitchenSink-list-object;
 }
@@ -730,7 +730,7 @@ export interface kitchenSink-typed_list-type_3_object {
   type: \\"type_3_object\\";
   date: string;
   image: string;
-  file: any;
+  file: string;
 }
 
 export interface kitchenSink-typed_list-type_4_object {
@@ -761,7 +761,7 @@ export interface kitchenSink {
   color: string;
   colorEditable: string;
   image: string;
-  file: any;
+  file: string;
   select: kitchenSink-select-options;
   select_multiple: kitchenSink-select_multiple-options[];
   select_numeric: kitchenSink-select_numeric-options;
