@@ -19,7 +19,7 @@ export const generateTypes = (
       [[], []],
     )
     .flat()
-    .map(resolveRelations)
+    .map(resolveRelations({ delimiter: options.delimiter }))
     .map(formatType)
     .map(appendExport)
     .join("\n\n")
