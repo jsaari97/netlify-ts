@@ -619,9 +619,9 @@ export interface authors {
 
 export type kitchenSink-select-options = \\"a\\" | \\"b\\" | \\"c\\";
 
-export type kitchenSink-select_multiple-options = \\"a\\" | \\"b\\" | \\"c\\";
+export type kitchenSink-select-multiple-options = \\"a\\" | \\"b\\" | \\"c\\";
 
-export type kitchenSink-select_numeric-options = 1 | 2 | 3;
+export type kitchenSink-select-numeric-options = 1 | 2 | 3;
 
 export type kitchenSink-object-select-options = \\"a\\" | \\"b\\" | \\"c\\";
 
@@ -704,36 +704,36 @@ export interface kitchenSink-list {
   object: kitchenSink-list-object;
 }
 
-export interface kitchenSink-typed_list-type_2_object-nested {
+export interface kitchenSink-typed-list-type-2-object-nested {
   number: string;
 }
 
-export type kitchenSink-typed_list-type_2_object-select-options = \\"a\\" | \\"b\\" | \\"c\\";
+export type kitchenSink-typed-list-type-2-object-select-options = \\"a\\" | \\"b\\" | \\"c\\";
 
-export interface kitchenSink-typed_list-type_1_object {
+export interface kitchenSink-typed-list-type-1-object {
   type: \\"type_1_object\\";
   string: string;
   boolean: boolean;
   text: string;
 }
 
-export interface kitchenSink-typed_list-type_2_object {
+export interface kitchenSink-typed-list-type-2-object {
   type: \\"type_2_object\\";
   number: string;
-  nested: kitchenSink-typed_list-type_2_object-nested;
-  select: kitchenSink-typed_list-type_2_object-select-options;
+  nested: kitchenSink-typed-list-type-2-object-nested;
+  select: kitchenSink-typed-list-type-2-object-select-options;
   datetime: string;
   markdown: string;
 }
 
-export interface kitchenSink-typed_list-type_3_object {
+export interface kitchenSink-typed-list-type-3-object {
   type: \\"type_3_object\\";
   date: string;
   image: string;
   file: string;
 }
 
-export interface kitchenSink-typed_list-type_4_object {
+export interface kitchenSink-typed-list-type-4-object {
   type: \\"type_4_object\\";
   name: string;
 }
@@ -743,7 +743,7 @@ export interface kitchenSink-code {
   lang: string;
 }
 
-export interface kitchenSink-code_alt {
+export interface kitchenSink-code-alt {
   alt: string;
   typescript: string;
 }
@@ -763,14 +763,208 @@ export interface kitchenSink {
   image: string;
   file: string;
   select: kitchenSink-select-options;
-  select_multiple: kitchenSink-select_multiple-options[];
-  select_numeric: kitchenSink-select_numeric-options;
+  select_multiple: kitchenSink-select-multiple-options[];
+  select_numeric: kitchenSink-select-numeric-options;
   hidden: any;
   object: kitchenSink-object;
   list: kitchenSink-list[];
-  typed_list: (kitchenSink-typed_list-type_1_object | kitchenSink-typed_list-type_2_object | kitchenSink-typed_list-type_3_object | kitchenSink-typed_list-type_4_object)[];
+  typed_list: (kitchenSink-typed-list-type-1-object | kitchenSink-typed-list-type-2-object | kitchenSink-typed-list-type-3-object | kitchenSink-typed-list-type-4-object)[];
   code: kitchenSink-code;
-  code_alt: kitchenSink-code_alt;
+  code_alt: kitchenSink-code-alt;
+  snippet: string;
+}
+"
+`;
+
+exports[`Output testing should support label, capitalization and delimiter at the same time 1`] = `
+"/* eslint-disable */
+/* tslint:disable */
+
+export interface Post {
+  title: string;
+  draft: boolean;
+  date: string;
+  image?: string;
+}
+
+export interface FAQ {
+  title: string;
+}
+
+export interface SiteSettingsPostSettings {
+  front_limit: string;
+  author: string;
+  thumb?: string;
+}
+
+export interface SiteSettings {
+  site_title: string;
+  posts: SiteSettingsPostSettings;
+}
+
+export interface AuthorsAuthor {
+  name: string;
+  description: string;
+}
+
+export interface Authors {
+  authors: AuthorsAuthor[];
+}
+
+export type KitchenSinkSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSinkSelectMultipleOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSinkSelectNumericOptions = 1 | 2 | 3;
+
+export type KitchenSinkObjectSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSinkObject {
+  post: any;
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: string;
+  select: KitchenSinkObjectSelectOptions;
+}
+
+export type KitchenSinkListSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSinkListObjectSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSinkListObjectListSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export type KitchenSinkListObjectListObjectSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSinkListObjectListObject {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: string;
+  select: KitchenSinkListObjectListObjectSelectOptions;
+}
+
+export interface KitchenSinkListObjectList {
+  post: any;
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: string;
+  select: KitchenSinkListObjectListSelectOptions;
+  hidden: any;
+  object: KitchenSinkListObjectListObject;
+}
+
+export interface KitchenSinkListObject {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: string;
+  select: KitchenSinkListObjectSelectOptions;
+  list: KitchenSinkListObjectList[];
+}
+
+export interface KitchenSinkList {
+  string: string;
+  boolean: boolean;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  image: string;
+  file: string;
+  select: KitchenSinkListSelectOptions;
+  object: KitchenSinkListObject;
+}
+
+export interface KitchenSinkTypedListType2ObjectNestedObject {
+  number: string;
+}
+
+export type KitchenSinkTypedListType2ObjectSelectOptions = \\"a\\" | \\"b\\" | \\"c\\";
+
+export interface KitchenSinkTypedListType1Object {
+  type: \\"type_1_object\\";
+  string: string;
+  boolean: boolean;
+  text: string;
+}
+
+export interface KitchenSinkTypedListType2Object {
+  type: \\"type_2_object\\";
+  number: string;
+  nested: KitchenSinkTypedListType2ObjectNestedObject;
+  select: KitchenSinkTypedListType2ObjectSelectOptions;
+  datetime: string;
+  markdown: string;
+}
+
+export interface KitchenSinkTypedListType3Object {
+  type: \\"type_3_object\\";
+  date: string;
+  image: string;
+  file: string;
+}
+
+export interface KitchenSinkTypedListType4Object {
+  type: \\"type_4_object\\";
+  name: string;
+}
+
+export interface KitchenSinkCodeBlock {
+  code: string;
+  lang: string;
+}
+
+export interface KitchenSinkCodeAltBlock {
+  alt: string;
+  typescript: string;
+}
+
+export interface KitchenSink {
+  post: any;
+  title: string;
+  boolean: boolean;
+  map: string;
+  text: string;
+  number: string;
+  markdown: string;
+  datetime: string;
+  date: string;
+  color: string;
+  colorEditable: string;
+  image: string;
+  file: string;
+  select: KitchenSinkSelectOptions;
+  select_multiple: KitchenSinkSelectMultipleOptions[];
+  select_numeric: KitchenSinkSelectNumericOptions;
+  hidden: any;
+  object: KitchenSinkObject;
+  list: KitchenSinkList[];
+  typed_list: (KitchenSinkTypedListType1Object | KitchenSinkTypedListType2Object | KitchenSinkTypedListType3Object | KitchenSinkTypedListType4Object)[];
+  code: KitchenSinkCodeBlock;
+  code_alt: KitchenSinkCodeAltBlock;
   snippet: string;
 }
 "

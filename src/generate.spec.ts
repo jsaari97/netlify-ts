@@ -25,4 +25,12 @@ describe("Output testing", () => {
 
     expect(generateTypes(collections, { delimiter: "-" })).toMatchSnapshot();
   });
+
+  it("should support label, capitalization and delimiter at the same time", () => {
+    const collections = loadConfig("kitchen-sink.yml");
+
+    expect(
+      generateTypes(collections, { label: true, capitalize: true, delimiter: "" }),
+    ).toMatchSnapshot();
+  });
 });
