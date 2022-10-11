@@ -1,20 +1,28 @@
 import type { Widget } from "../types";
 
-export const getName = (name: string, capitalize: boolean) =>
-  capitalize ? toCapitalized(name) : name;
+export const getName = (name: string, capitalize: boolean, delimiter: string) =>
+  toDelimiter(capitalize ? toCapitalized(name) : name, delimiter);
 
-export const getWidgetName = (widget: Widget, useLabel: boolean, capitalize: boolean): string =>
+export const getWidgetName = (
+  widget: Widget,
+  useLabel: boolean,
+  capitalize: boolean,
+  delimiter: string,
+): string =>
   getName(
     useLabel
       ? (widget.singularLabel || widget.label || widget.name).replace(/\s./gi, toCamelCase)
       : widget.name,
     capitalize,
+    delimiter,
   );
 
 export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
 
 export const toCapitalized = (str: string) =>
   str.replace(/(^|[\s-_])(\w)/g, (match, separator, char) => `${separator}${char.toUpperCase()}`);
+
+export const toDelimiter = (str: string, delimiter: string) => str.replace(/[\s-_]/g, delimiter);
 
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
@@ -86,9 +94,9 @@ export const transformType =
     const required = !widget.required ? "?" : "";
     const multiple = widget.multiple ? "[]" : "";
 
-    const widgetName = getWidgetName(widget, label, capitalize);
+    const widgetName = getWidgetName(widget, label, capitalize, delimiter);
 
-    const name = getName(prefix ? `${prefix}${delimiter}${widgetName}` : widgetName, capitalize);
+    const name = getName(prefix ? `${prefix}_${widgetName}` : widgetName, capitalize, delimiter);
 
     if (!Array.isArray(widget.type)) {
       // if widget name is `body`
@@ -140,7 +148,7 @@ export const transformType =
 
       // check if enum list
       if (typeof iterator[0] === "string" || typeof iterator[0] === "number") {
-        const enumName = getName(`${name}${delimiter}options`, capitalize);
+        const enumName = getName(`${name}_options`, capitalize, delimiter);
         return [
           [...types[0], `${widget.name}${required}: ${enumName}${multiple};`],
           [
@@ -160,7 +168,13 @@ export const transformType =
 
         const pattern = new RegExp(
           `(${(objects as Widget[])
-            .map((w) => `${name}${delimiter}${getWidgetName(w, label, capitalize)}`)
+            .map((w) =>
+              getName(
+                `${name}_${getWidgetName(w, label, capitalize, delimiter)}`,
+                capitalize,
+                delimiter,
+              ),
+            )
             .join("|")}) {`,
         );
 
