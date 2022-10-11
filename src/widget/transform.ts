@@ -1,3 +1,4 @@
+import { DEFAULT_DELIMITER } from "../constants";
 import type { Widget } from "../types";
 
 export const getName = (name: string, capitalize: boolean, delimiter: string) =>
@@ -89,7 +90,12 @@ export interface TransformState {
 }
 
 export const transformType =
-  ({ prefix = "", label = false, capitalize = false, delimiter = "_" }: TransformState = {}) =>
+  ({
+    prefix = "",
+    label = false,
+    capitalize = false,
+    delimiter = DEFAULT_DELIMITER,
+  }: TransformState = {}) =>
   (types: TypeArray, widget: Widget): TypeArray => {
     const required = !widget.required ? "?" : "";
     const multiple = widget.multiple ? "[]" : "";

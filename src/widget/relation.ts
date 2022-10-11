@@ -1,5 +1,7 @@
+import { DEFAULT_DELIMITER } from "../constants";
+
 export const resolveRelations =
-  ({ delimiter = "_" } = {}) =>
+  ({ delimiter = DEFAULT_DELIMITER } = {}) =>
   (type: string, _i: number, typeArray: string[]): string => {
     return type.replace(/(~.*?)(;|\[)/g, (_s, match: string, closingChar: string) => {
       const resolveType = (relationType: string) => {
