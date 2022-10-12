@@ -1,20 +1,29 @@
+import { DEFAULT_DELIMITER } from "../constants";
 import type { Widget } from "../types";
 
-export const getName = (name: string, capitalize: boolean) =>
-  capitalize ? toCapitalized(name) : name;
+export const getName = (name: string, capitalize: boolean, delimiter: string) =>
+  toDelimiter(capitalize ? toCapitalized(name) : name, delimiter);
 
-export const getWidgetName = (widget: Widget, useLabel: boolean, capitalize: boolean): string =>
+export const getWidgetName = (
+  widget: Widget,
+  useLabel: boolean,
+  capitalize: boolean,
+  delimiter: string,
+): string =>
   getName(
     useLabel
       ? (widget.singularLabel || widget.label || widget.name).replace(/\s./gi, toCamelCase)
       : widget.name,
     capitalize,
+    delimiter,
   );
 
 export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
 
 export const toCapitalized = (str: string) =>
   str.replace(/(^|[\s-_])(\w)/g, (match, separator, char) => `${separator}${char.toUpperCase()}`);
+
+export const toDelimiter = (str: string, delimiter: string) => str.replace(/[\s-_]/g, delimiter);
 
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
@@ -77,17 +86,23 @@ export interface TransformState {
   prefix?: string;
   label?: boolean;
   capitalize?: boolean;
+  delimiter?: string;
 }
 
 export const transformType =
-  ({ prefix = "", label = false, capitalize = false }: TransformState = {}) =>
+  ({
+    prefix = "",
+    label = false,
+    capitalize = false,
+    delimiter = DEFAULT_DELIMITER,
+  }: TransformState = {}) =>
   (types: TypeArray, widget: Widget): TypeArray => {
     const required = !widget.required ? "?" : "";
     const multiple = widget.multiple ? "[]" : "";
 
-    const widgetName = getWidgetName(widget, label, capitalize);
+    const widgetName = getWidgetName(widget, label, capitalize, delimiter);
 
-    const name = getName(prefix ? `${prefix}_${widgetName}` : widgetName, capitalize);
+    const name = getName(prefix ? `${prefix}_${widgetName}` : widgetName, capitalize, delimiter);
 
     if (!Array.isArray(widget.type)) {
       // if widget name is `body`
@@ -139,7 +154,7 @@ export const transformType =
 
       // check if enum list
       if (typeof iterator[0] === "string" || typeof iterator[0] === "number") {
-        const enumName = getName(`${name}_options`, capitalize);
+        const enumName = getName(`${name}_options`, capitalize, delimiter);
         return [
           [...types[0], `${widget.name}${required}: ${enumName}${multiple};`],
           [
@@ -153,13 +168,19 @@ export const transformType =
       if (Array.isArray(iterator[0])) {
         const [typeKey, ...objects] = iterator[0];
         const [names, interfaces] = (objects as Widget[]).reduce(
-          transformType({ prefix: name, label, capitalize }),
+          transformType({ prefix: name, label, capitalize, delimiter }),
           empty,
         );
 
         const pattern = new RegExp(
           `(${(objects as Widget[])
-            .map((w) => `${name}_${getWidgetName(w, label, capitalize)}`)
+            .map((w) =>
+              getName(
+                `${name}_${getWidgetName(w, label, capitalize, delimiter)}`,
+                capitalize,
+                delimiter,
+              ),
+            )
             .join("|")}) {`,
         );
 
@@ -180,7 +201,7 @@ export const transformType =
       // root level collection
       if (!prefix) {
         const [fields, interfaces] = (iterator as Widget[]).reduce(
-          transformType({ prefix: widgetName, label, capitalize }),
+          transformType({ prefix: widgetName, label, capitalize, delimiter }),
           empty,
         );
 
@@ -192,7 +213,7 @@ export const transformType =
 
       // object field
       const [fields, interfaces] = (iterator as Widget[]).reduce(
-        transformType({ prefix: name, label, capitalize }),
+        transformType({ prefix: name, label, capitalize, delimiter }),
         [[], []],
       );
 

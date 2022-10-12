@@ -11,7 +11,7 @@ describe("resolveRelation", () => {
   it("should resolve simple relations", () => {
     const input = [...types, "interface posts { title: string; author?: ~authors/name; }"];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; author?: string; }",
     );
   });
@@ -22,7 +22,7 @@ describe("resolveRelation", () => {
       "interface posts { title: string; author_zip: ~authors/location.zip; }",
     ];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; author_zip: number; }",
     );
   });
@@ -30,7 +30,7 @@ describe("resolveRelation", () => {
   it("should resolve object relations", () => {
     const input = [...types, "interface posts { title: string; author: ~authors/*; }"];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; author: authors; }",
     );
   });
@@ -41,7 +41,7 @@ describe("resolveRelation", () => {
       "interface posts { title: string; author_location: ~authors/location.*; }",
     ];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; author_location: authors_location; }",
     );
   });
@@ -49,7 +49,7 @@ describe("resolveRelation", () => {
   it("should resolve nested relations", () => {
     const input = [...types, "interface posts { title: string; publisher: ~authors/publisher; }"];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; publisher: string; }",
     );
   });
@@ -57,7 +57,7 @@ describe("resolveRelation", () => {
   it("should resolve literal relations", () => {
     const input = [...types, "interface posts { title: string; author_status: ~authors/status; }"];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; author_status: authors_status_options; }",
     );
   });
@@ -69,7 +69,7 @@ describe("resolveRelation", () => {
       "interface posts { title: string; post_image: ~posts/image.*.url; }",
     ];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; post_image: string; }",
     );
   });
@@ -81,7 +81,7 @@ describe("resolveRelation", () => {
       "interface posts { title: string; post_images: ~posts/image.*.url[]; }",
     ];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; post_images: string[]; }",
     );
   });
@@ -89,8 +89,20 @@ describe("resolveRelation", () => {
   it("should resolve template relations", () => {
     const input = [...types, "interface posts { title: string; author: ~authors/{{slug}}; }"];
 
-    expect(input.map(resolveRelations)[input.length - 1]).toEqual(
+    expect(input.map(resolveRelations())[input.length - 1]).toEqual(
       "interface posts { title: string; author: string; }",
+    );
+  });
+
+  it("should support custom delimiter", () => {
+    const input = [
+      "interface authors__location { city: string; }",
+      "interface authors { location: authors__location; }",
+      "interface posts { author__location: ~authors/location.*; }",
+    ];
+
+    expect(input.map(resolveRelations({ delimiter: "-" }))[input.length - 1]).toEqual(
+      "interface posts { author__location: authors-location; }",
     );
   });
 });
