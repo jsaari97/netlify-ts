@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import ora from "ora";
-import { OUTPUT_FILENAME } from "./constants";
+import { DEFAULT_DELIMITER, OUTPUT_FILENAME } from "./constants";
 import { outputFile } from "./output";
 import { loadConfig } from "./input";
 import { generateTypes } from "./generate";
@@ -27,7 +27,7 @@ const args = yargs
   })
   .option("delimiter", {
     demandOption: false,
-    default: "_",
+    default: DEFAULT_DELIMITER,
     describe: "type name delimiter. e.g. 'Posts_Author'",
     type: "string",
   }).argv;
