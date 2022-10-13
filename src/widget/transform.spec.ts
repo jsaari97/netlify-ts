@@ -8,6 +8,7 @@ import {
   TransformState,
   toCapitalized,
   toCamelCase,
+  toDelimiter,
 } from "./transform";
 
 describe("Widget transformation", () => {
@@ -735,5 +736,12 @@ describe("toCapitalized", () => {
   it("should capitalize words separated by any non-alphanumeric characters", () => {
     const str = "this is  a_string.with!non-alphanumeric#delimiters";
     expect(toCapitalized(str)).toBe("This Is  A_String.With!Non-Alphanumeric#Delimiters");
+  });
+});
+
+describe("toDelimiter", () => {
+  it("replace any non-alphanumeric character with custom delimiter", () => {
+    const str = "this is  a_string.with!non-alphanumeric#delimiters";
+    expect(toDelimiter(str, "_")).toBe("this_is_a_string_with_non_alphanumeric_delimiters");
   });
 });

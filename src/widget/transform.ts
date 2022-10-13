@@ -25,7 +25,8 @@ export const toCapitalized = (str: string) =>
     (match, delimiter, char) => `${delimiter}${char.toUpperCase()}`,
   );
 
-export const toDelimiter = (str: string, delimiter: string) => str.replace(/[\s-_]/g, delimiter);
+export const toDelimiter = (str: string, delimiter: string) =>
+  str.replace(/[^a-z\d]+/gi, delimiter);
 
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;
