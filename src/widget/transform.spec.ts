@@ -7,6 +7,7 @@ import {
   sortTypes,
   TransformState,
   toCapitalized,
+  toCamelCase,
 } from "./transform";
 
 describe("Widget transformation", () => {
@@ -723,8 +724,15 @@ describe("Pull typename", () => {
   });
 });
 
-describe("Capitalization", () => {
-  it("should capitalize words separated by any non-alphanumeric char", () => {
+describe("toCamelCase", () => {
+  it("should camelCase words separated by any non-alphanumeric characters", () => {
+    const str = "this is  a_string.with!non-alphanumeric#delimiters";
+    expect(toCamelCase(str)).toBe("thisIsAStringWithNonAlphanumericDelimiters");
+  });
+});
+
+describe("toCapitalized", () => {
+  it("should capitalize words separated by any non-alphanumeric characters", () => {
     const str = "this is  a_string.with!non-alphanumeric#delimiters";
     expect(toCapitalized(str)).toBe("This Is  A_String.With!Non-Alphanumeric#Delimiters");
   });
