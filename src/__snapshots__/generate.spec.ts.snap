@@ -345,7 +345,7 @@ export interface KitchenSink_TypedList_type3Object {
   file: string;
 }
 
-export interface KitchenSink_TypedList_type_4_object {
+export interface KitchenSink_TypedList_type4Object {
   type: \\"type_4_object\\";
   name: string;
 }
@@ -380,7 +380,7 @@ export interface KitchenSink {
   hidden: any;
   object: KitchenSink_Object;
   list: KitchenSink_List[];
-  typed_list: (KitchenSink_TypedList_Type1Object | KitchenSink_TypedList_Type2Object | KitchenSink_TypedList_type3Object | KitchenSink_TypedList_type_4_object)[];
+  typed_list: (KitchenSink_TypedList_Type1Object | KitchenSink_TypedList_Type2Object | KitchenSink_TypedList_type3Object | KitchenSink_TypedList_type4Object)[];
   code: KitchenSink_CodeBlock;
   code_alt: KitchenSink_CodeAltBlock;
   snippet: string;

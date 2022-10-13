@@ -663,10 +663,10 @@ describe("Widget transformation", () => {
         { prefix: "parent", label: true },
       ),
     ).toEqual([
-      ["list: (parent_my_list_typeOne | parent_my_list_type_two)[];"],
+      ["list: (parent_myList_typeOne | parent_myList_typeTwo)[];"],
       [
-        `interface parent_my_list_typeOne { __typename: "type_one"; key: string; }`,
-        `interface parent_my_list_type_two { __typename: "two"; id: number; }`,
+        `interface parent_myList_typeOne { __typename: "type_one"; key: string; }`,
+        `interface parent_myList_typeTwo { __typename: "two"; id: number; }`,
       ],
     ]);
   });
