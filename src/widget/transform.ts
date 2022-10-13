@@ -21,7 +21,10 @@ export const getWidgetName = (
 export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
 
 export const toCapitalized = (str: string) =>
-  str.replace(/(^|[\s-_])(\w)/g, (match, separator, char) => `${separator}${char.toUpperCase()}`);
+  str.replace(
+    /(^|[^a-z\d])([a-z\d])/gi,
+    (match, separator, char) => `${separator}${char.toUpperCase()}`,
+  );
 
 export const toDelimiter = (str: string, delimiter: string) => str.replace(/[\s-_]/g, delimiter);
 

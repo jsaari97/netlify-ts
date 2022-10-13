@@ -724,23 +724,8 @@ describe("Pull typename", () => {
 });
 
 describe("Capitalization", () => {
-  it("should capitalize words separated by spaces", () => {
-    const str = "space separated string";
-    expect(toCapitalized(str)).toBe("Space Separated String");
-  });
-
-  it("should capitalize words separated by dashes", () => {
-    const str = "dash-separated-string";
-    expect(toCapitalized(str)).toBe("Dash-Separated-String");
-  });
-
-  it("should capitalize words separated by underscores", () => {
-    const str = "underscore_separated_string";
-    expect(toCapitalized(str)).toBe("Underscore_Separated_String");
-  });
-
-  it("should handle mixed separators", () => {
-    const str = "string with-mixed_separators";
-    expect(toCapitalized(str)).toBe("String With-Mixed_Separators");
+  it("should capitalize words separated by any non-alphanumeric char", () => {
+    const str = "this is  a_string.with!non-alphanumeric#delimiters";
+    expect(toCapitalized(str)).toBe("This Is  A_String.With!Non-Alphanumeric#Delimiters");
   });
 });
