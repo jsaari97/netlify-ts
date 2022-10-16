@@ -1,20 +1,28 @@
 import type { Field, Widget } from "../types";
 
-export const resolveWidget = (field: Field): Widget => {
-  return {
-    name: field.name,
-    required: field.required !== false,
-    label: field.label,
-    singularLabel: field.label_singular,
-    multiple:
-      field.widget === "list" ||
-      ((field.widget === "select" || field.widget === "relation") && !!field.multiple),
-    type: resolveType(field),
-  };
-};
+interface ResolveOptions {
+  externalMediaLibrary?: boolean;
+}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const resolveType = (field: Field): Widget["type"] => {
+export const resolveWidget =
+  (options: ResolveOptions = {}) =>
+  (field: Field): Widget => {
+    return {
+      name: field.name,
+      required: field.required !== false,
+      label: field.label,
+      singularLabel: field.label_singular,
+      multiple:
+        field.widget === "list" ||
+        ((field.widget === "select" || field.widget === "relation") && !!field.multiple) ||
+        (!!options.externalMediaLibrary &&
+          (field.widget === "file" || field.widget === "image") &&
+          !!field.media_library?.config?.multiple),
+      type: resolveType(field, options),
+    };
+  };
+
+export const resolveType = (field: Field, options: ResolveOptions = {}): Widget["type"] => {
   switch (field.widget) {
     case "string":
     case "text":
@@ -43,7 +51,7 @@ export const resolveType = (field: Field): Widget["type"] => {
       ];
     case "list":
       if (field.field) {
-        const child = resolveWidget(field.field);
+        const child = resolveWidget(options)(field.field);
 
         if (typeof child.type === "string" && field.field.required === false) {
           child.type += "?";
@@ -53,12 +61,12 @@ export const resolveType = (field: Field): Widget["type"] => {
       }
 
       if (field.fields) {
-        return field.fields.map(resolveWidget);
+        return field.fields.map(resolveWidget(options));
       }
 
       if (field.types) {
         const type = field.typeKey || "type";
-        return [[type, ...field.types.map(resolveWidget)]];
+        return [[type, ...field.types.map(resolveWidget(options))]];
       }
 
       return "string";
@@ -66,7 +74,7 @@ export const resolveType = (field: Field): Widget["type"] => {
       return field.options.map((option) => (typeof option === "object" ? option.value : option));
     case "object":
     case "root":
-      return field.fields?.map(resolveWidget);
+      return field.fields?.map(resolveWidget(options));
     case "relation":
       return `~${field.collection}/${field.value_field}`;
     case "hidden":

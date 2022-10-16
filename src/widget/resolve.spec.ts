@@ -3,31 +3,72 @@ import { resolveWidget, resolveType } from "./resolve";
 describe("Resolve widget shape", () => {
   describe("multiple property", () => {
     it('should be false if "multiple" prop falsy', () => {
-      expect(resolveWidget({ name: "name", widget: "string" }).multiple).toBe(false);
+      expect(resolveWidget()({ name: "name", widget: "string" }).multiple).toBe(false);
     });
 
     it('should be true if "multiple" prop true', () => {
       expect(
-        resolveWidget({ name: "name", widget: "select", multiple: true, options: [] }).multiple,
+        resolveWidget()({ name: "name", widget: "select", multiple: true, options: [] }).multiple,
       ).toBe(true);
     });
 
     it('should be true if "list" widget type', () => {
-      expect(resolveWidget({ name: "name", widget: "list" }).multiple).toBe(true);
+      expect(resolveWidget()({ name: "name", widget: "list" }).multiple).toBe(true);
+    });
+
+    it('should be true if "image" widget with external media library', () => {
+      expect(
+        resolveWidget({ externalMediaLibrary: true })({
+          name: "name",
+          widget: "image",
+          media_library: { config: { multiple: true } },
+        }).multiple,
+      ).toBe(true);
+    });
+
+    it('should be true if "file" widget with external media library', () => {
+      expect(
+        resolveWidget({ externalMediaLibrary: true })({
+          name: "name",
+          widget: "file",
+          media_library: { config: { multiple: true } },
+        }).multiple,
+      ).toBe(true);
+    });
+
+    it('should be false if "file" widget without external media library', () => {
+      expect(
+        resolveWidget({ externalMediaLibrary: false })({
+          name: "name",
+          widget: "file",
+          media_library: { config: { multiple: true } },
+        }).multiple,
+      ).toBe(false);
+    });
+
+    it('should be false if "file" widget with external media library but no "multiple" config', () => {
+      expect(
+        resolveWidget({ externalMediaLibrary: true })({
+          name: "name",
+          widget: "file",
+        }).multiple,
+      ).toBe(false);
     });
   });
 
   describe("required property", () => {
     it("should be true by default", () => {
-      expect(resolveWidget({ name: "name", widget: "string" }).required).toBe(true);
+      expect(resolveWidget()({ name: "name", widget: "string" }).required).toBe(true);
     });
 
     it("should be true if value truthy", () => {
-      expect(resolveWidget({ name: "name", widget: "string", required: true }).required).toBe(true);
+      expect(resolveWidget()({ name: "name", widget: "string", required: true }).required).toBe(
+        true,
+      );
     });
 
     it("should be false if value is false", () => {
-      expect(resolveWidget({ name: "name", widget: "string", required: false }).required).toBe(
+      expect(resolveWidget()({ name: "name", widget: "string", required: false }).required).toBe(
         false,
       );
     });

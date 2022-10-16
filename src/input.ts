@@ -1,9 +1,9 @@
 import yaml from "js-yaml";
 import fs from "fs";
 import path from "path";
-import type { Collection, NetlifyCMSConfig } from "./types";
+import type { NetlifyCMSConfig } from "./types";
 
-export const loadConfig = (config: string | NetlifyCMSConfig): Collection[] => {
+export const loadConfig = (config: string | NetlifyCMSConfig): NetlifyCMSConfig => {
   let data;
 
   if (typeof config === "object") {
@@ -18,7 +18,7 @@ export const loadConfig = (config: string | NetlifyCMSConfig): Collection[] => {
     throw new Error("Failed loading collections from config");
   }
 
-  return data.collections;
+  return data;
 };
 
 const loadConfigFile = (fileName: string): NetlifyCMSConfig => {

@@ -5,6 +5,14 @@ interface BaseField {
   label_singular?: string;
 }
 
+interface MediaLibraryField {
+  media_library?: {
+    config?: {
+      multiple?: boolean;
+    };
+  };
+}
+
 interface CommonField extends BaseField {
   widget: "string" | "text" | "markdown" | "map" | "date" | "datetime" | "color" | "hidden";
 }
@@ -35,12 +43,12 @@ interface NumberField extends BaseField {
   value_type?: "int" | "float";
 }
 
-interface ImageField extends BaseField {
+interface ImageField extends BaseField, MediaLibraryField {
   widget: "image";
   allow_multiple?: boolean;
 }
 
-interface FileField extends BaseField {
+interface FileField extends BaseField, MediaLibraryField {
   widget: "file";
   allow_multiple?: boolean;
 }

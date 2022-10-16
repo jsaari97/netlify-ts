@@ -34,6 +34,13 @@ describe("Widget transformation", () => {
         [],
       ]);
     });
+
+    it("should support arrays", () => {
+      expect(parse({ name: "names", type: "string", required: true, multiple: true })).toEqual([
+        ["names: string[];"],
+        [],
+      ]);
+    });
   });
 
   describe("boolean", () => {

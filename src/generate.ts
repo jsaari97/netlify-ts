@@ -1,15 +1,14 @@
 import { pullCollection } from "./collection";
 import { appendExport, formatType } from "./output";
 import { resolveRelations, resolveWidget, transformType } from "./widget";
-import type { Collection, NetlifyTsOptions } from "./types";
+import type { NetlifyCMSConfig, NetlifyTsOptions } from "./types";
 
-export const generateTypes = (
-  collections: Collection[],
-  options: NetlifyTsOptions = {},
-): string => {
-  return collections
+export const generateTypes = (config: NetlifyCMSConfig, options: NetlifyTsOptions = {}): string => {
+  const externalMediaLibrary = hasExternalMediaLibrary(config);
+
+  return config.collections
     .flatMap(pullCollection)
-    .map(resolveWidget)
+    .map(resolveWidget({ externalMediaLibrary }))
     .reduce(
       transformType({
         label: !!options.label,
@@ -26,3 +25,6 @@ export const generateTypes = (
     .replace(/^/, "/* eslint-disable */\n/* tslint:disable */\n\n")
     .concat("\n");
 };
+
+export const hasExternalMediaLibrary = (config: NetlifyCMSConfig): boolean =>
+  !!config.media_library?.name && !!config.media_library?.config;

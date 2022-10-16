@@ -6,9 +6,9 @@ const createNetlifyTypes = (
   input: string | NetlifyCMSConfig,
   options: NetlifyTsOptions = {},
 ): string => {
-  const collections = loadConfig(input);
+  const config = loadConfig(input);
 
-  return generateTypes(collections, options);
+  return generateTypes(config, options);
 };
 
 export default createNetlifyTypes;

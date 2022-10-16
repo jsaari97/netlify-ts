@@ -9,17 +9,17 @@ const mockConfigObject = yaml.load(
 
 describe("Load configuration", () => {
   it("should return collections from yaml config file", () => {
-    const result = loadConfig("kitchen-sink.yml");
+    const { collections } = loadConfig("kitchen-sink.yml");
 
-    expect(result.length).toBeDefined();
-    expect(result).toEqual(mockConfigObject.collections);
+    expect(collections.length).toBeDefined();
+    expect(collections).toEqual(mockConfigObject.collections);
   });
 
   it("should return collections from config object", () => {
-    const result = loadConfig(mockConfigObject);
+    const { collections } = loadConfig(mockConfigObject);
 
-    expect(result.length).toBeDefined();
-    expect(result).toEqual(mockConfigObject.collections);
+    expect(collections.length).toBeDefined();
+    expect(collections).toEqual(mockConfigObject.collections);
   });
 
   it("should throw if invalid filetype", () => {
@@ -33,7 +33,7 @@ describe("Load configuration", () => {
   });
 
   it("should throw if malformed config object", () => {
-    const t = () => loadConfig({ foo: "bar" } as NetlifyCMSConfig);
+    const t = () => loadConfig({ foo: "bar" } as unknown as NetlifyCMSConfig);
     expect(t).toThrow("Failed loading collections from config");
   });
 });
