@@ -11,19 +11,22 @@ export const getWidgetName = (
   delimiter: string,
 ): string =>
   getName(
-    useLabel
-      ? (widget.singularLabel || widget.label || widget.name).replace(/\s./gi, toCamelCase)
-      : widget.name,
+    useLabel ? toCamelCase(widget.singularLabel || widget.label || widget.name) : widget.name,
     capitalize,
     delimiter,
   );
 
-export const toCamelCase = (str: string): string => str.slice(1).toUpperCase();
+export const toCamelCase = (str: string): string =>
+  str.replace(/([^a-z\d]+)([a-z\d])/gi, (match, delimiter, char) => char.toUpperCase());
 
 export const toCapitalized = (str: string) =>
-  str.replace(/(^|[\s-_])(\w)/g, (match, separator, char) => `${separator}${char.toUpperCase()}`);
+  str.replace(
+    /(^|[^a-z\d])([a-z\d])/gi,
+    (match, delimiter, char) => `${delimiter}${char.toUpperCase()}`,
+  );
 
-export const toDelimiter = (str: string, delimiter: string) => str.replace(/[\s-_]/g, delimiter);
+export const toDelimiter = (str: string, delimiter: string) =>
+  str.replace(/[^a-z\d]+/gi, delimiter);
 
 export const wrapEnum = (item: number | string): string =>
   typeof item === "number" ? `${item}` : `"${item}"`;

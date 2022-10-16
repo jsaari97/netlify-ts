@@ -7,6 +7,8 @@ import {
   sortTypes,
   TransformState,
   toCapitalized,
+  toCamelCase,
+  toDelimiter,
 } from "./transform";
 
 describe("Widget transformation", () => {
@@ -661,10 +663,10 @@ describe("Widget transformation", () => {
         { prefix: "parent", label: true },
       ),
     ).toEqual([
-      ["list: (parent_my_list_typeOne | parent_my_list_type_two)[];"],
+      ["list: (parent_myList_typeOne | parent_myList_typeTwo)[];"],
       [
-        `interface parent_my_list_typeOne { __typename: "type_one"; key: string; }`,
-        `interface parent_my_list_type_two { __typename: "two"; id: number; }`,
+        `interface parent_myList_typeOne { __typename: "type_one"; key: string; }`,
+        `interface parent_myList_typeTwo { __typename: "two"; id: number; }`,
       ],
     ]);
   });
@@ -723,24 +725,23 @@ describe("Pull typename", () => {
   });
 });
 
-describe("Capitalization", () => {
-  it("should capitalize words separated by spaces", () => {
-    const str = "space separated string";
-    expect(toCapitalized(str)).toBe("Space Separated String");
+describe("toCamelCase", () => {
+  it("should camelCase words separated by any non-alphanumeric characters", () => {
+    const str = "this is  a_string.with!non-alphanumeric#delimiters";
+    expect(toCamelCase(str)).toBe("thisIsAStringWithNonAlphanumericDelimiters");
   });
+});
 
-  it("should capitalize words separated by dashes", () => {
-    const str = "dash-separated-string";
-    expect(toCapitalized(str)).toBe("Dash-Separated-String");
+describe("toCapitalized", () => {
+  it("should capitalize words separated by any non-alphanumeric characters", () => {
+    const str = "this is  a_string.with!non-alphanumeric#delimiters";
+    expect(toCapitalized(str)).toBe("This Is  A_String.With!Non-Alphanumeric#Delimiters");
   });
+});
 
-  it("should capitalize words separated by underscores", () => {
-    const str = "underscore_separated_string";
-    expect(toCapitalized(str)).toBe("Underscore_Separated_String");
-  });
-
-  it("should handle mixed separators", () => {
-    const str = "string with-mixed_separators";
-    expect(toCapitalized(str)).toBe("String With-Mixed_Separators");
+describe("toDelimiter", () => {
+  it("replace any non-alphanumeric character with custom delimiter", () => {
+    const str = "this is  a_string.with!non-alphanumeric#delimiters";
+    expect(toDelimiter(str, "_")).toBe("this_is_a_string_with_non_alphanumeric_delimiters");
   });
 });
