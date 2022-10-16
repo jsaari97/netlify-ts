@@ -1,11 +1,11 @@
-# Netlify Type Generator
+# Netlify CMS Type Generator
 
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fjsaari97%2Fnetlify-ts%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/jsaari97/netlify-ts/goto?ref=master)
 ![Supported Node versions](https://img.shields.io/node/v/netlify-ts)
 [![Code coverage](https://img.shields.io/codecov/c/gh/jsaari97/netlify-ts)](https://app.codecov.io/gh/jsaari97/netlify-ts/)
 ![Project license](https://img.shields.io/npm/l/netlify-ts)
 
-**Turn your Netlify CMS collections into TypeScript typings!**
+**Turn your Netlify CMS collections into TypeScript types!**
 
 <br />
 
@@ -23,80 +23,74 @@ This package generates a [TypeScript](https://www.typescriptlang.org/) schema of
 
 # Installation
 
-The package can be installed globally or as a `devDependency` using NPM or Yarn.
-
-**NPM:**
-
 ```bash
-npm install -g netlify-ts
-
-# or
-
 npm install -D netlify-ts
-```
-
-**Yarn:**
-
-```bash
-yarn global add netlify-ts
-
-# or
-
-yarn add -D netlify-ts
 ```
 
 # Usage
 
-## Method 1: CLI
+## CLI
 
-The main method of usage is through the command-line. Having installed the package either globally or in project's `devDependencies`, simply call `netlify-ts` with a parameter pointing to your Netlify CMS admin `config.yml` file.
+The main method of usage is through the command-line. Having installed the package either globally or in project's `devDependencies`, simply call `netlify-ts` with a parameter pointing to your Netlify CMS `config.yml` file.
 
 ```bash
-netlify-ts public/admin/config.yml
+npx netlify-ts path/to/config.yml
 ```
 
-This generates by default a `netlify-types.ts` file in the project root containing types for your netlify content types.
+This generates a `netlify-types.ts` file in the project root containing types for your Netlify CMS collections.
 
 ### Custom output location
 
 You can also specify a custom output location by providing a second optional parameter. Omitting the filename outputs a file in the given directory with the default filename (`netlify-types.ts`).
 
 ```bash
-netlify-ts public/admin/config.yml src/my-types.ts
+npx netlify-ts config.yml src/my-types.ts
 ```
 
-## Method 2: Programmatically
+## Programmatically
 
-In case the CLI doesn't suit your project workflow or you need to invoke the type generation inside your code, the project exposes both a `createNetlifyTypes` and `createNetlifyTypesAsync` function that returns the generated type file as a string.
+In case the CLI doesn't suit your workflow or you need to invoke the type generation inside your code, the project exposes a function that returns the generated types as a string.
 
 ### Config file
 
 ```javascript
 const fs = require("fs");
-const { createNetlifyTypes } = require("netlify-ts");
+const createNetlifyTypes = require("netlify-ts");
 
-function main() {
-  const types = createNetlifyTypes("public/admin/config.yml");
-  fs.writeFileSync("my-types.ts", types);
-}
-
-main();
+const types = createNetlifyTypes("config.yml");
+fs.writeFileSync("cms-types.ts", types);
 ```
 
 ### Config object
 
 ```javascript
 const fs = require("fs");
-const { createNetlifyTypes } = require("netlify-ts");
+const createNetlifyTypes = require("netlify-ts");
 
-const cmsConfig = require("./config");
+const cmsConfig = { collections: [ ... ] };
 
-function main() {
-  const types = createNetlifyTypes(cmsConfig);
-  fs.writeFileSync("my-types.ts", types);
-}
+const types = createNetlifyTypes(cmsConfig);
+fs.writeFileSync("cms-types.ts", types);
+```
 
-main();
+# Options
+
+| Option     | Default | Description                                  |
+| ---------- | ------- | -------------------------------------------- |
+| label      | `true`  | Use 'label_singular' or 'label' as type name |
+| capitalize | `false` | Capitalize type names                        |
+| delimiter  | `_`     | Type name delimiter, e.g. 'Posts_Author'     |
+
+## CLI example
+
+```bash
+npx netlify-ts config.yml --capitalize
+```
+
+### Code example
+
+```javascript
+createNetlifyTypes("config.yml", { capitalize: true });
 ```
 
 # License

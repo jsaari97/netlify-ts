@@ -2,7 +2,7 @@ import { generateTypes } from "./generate";
 import { loadConfig } from "./input";
 import type { NetlifyCMSConfig, NetlifyTsOptions } from "./types";
 
-export const createNetlifyTypes = (
+const createNetlifyTypes = (
   input: string | NetlifyCMSConfig,
   options: NetlifyTsOptions = {},
 ): string => {
@@ -11,17 +11,4 @@ export const createNetlifyTypes = (
   return generateTypes(collections, options);
 };
 
-export const createNetlifyTypesAsync = async (
-  input: string | NetlifyCMSConfig,
-  options?: NetlifyTsOptions,
-): Promise<string> => {
-  try {
-    const types = createNetlifyTypes(input, options);
-
-    return Promise.resolve(types);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export default createNetlifyTypesAsync;
+export default createNetlifyTypes;
