@@ -1,5 +1,5 @@
 import { loadConfig } from "./input";
-import { generateTypes } from "./generate";
+import { generateTypes, hasExternalMediaLibrary } from "./generate";
 
 describe("Output testing", () => {
   it("should parse kitchen sink correctly", () => {
@@ -32,5 +32,17 @@ describe("Output testing", () => {
     expect(
       generateTypes(config, { label: true, capitalize: true, delimiter: "" }),
     ).toMatchSnapshot();
+  });
+});
+
+describe("hasExternalMediaLibrary()", () => {
+  it("should return false if no media_library defined", () => {
+    expect(hasExternalMediaLibrary({ collections: [] })).toBe(false);
+  });
+
+  it("should return true if media_library defined", () => {
+    expect(
+      hasExternalMediaLibrary({ collections: [], media_library: { name: "test", config: {} } }),
+    ).toBe(true);
   });
 });
