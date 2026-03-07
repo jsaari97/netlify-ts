@@ -1,15 +1,15 @@
-# Netlify CMS Type Generator
+# Decap CMS / Netlify CMS Type Generator
 
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fjsaari97%2Fnetlify-ts%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/jsaari97/netlify-ts/goto?ref=master)
 ![Supported Node versions](https://img.shields.io/node/v/netlify-ts)
 [![Code coverage](https://img.shields.io/codecov/c/gh/jsaari97/netlify-ts)](https://app.codecov.io/gh/jsaari97/netlify-ts/)
 ![Project license](https://img.shields.io/npm/l/netlify-ts)
 
-**Turn your Netlify CMS collections into TypeScript types!**
+**Turn your Decap CMS (formerly Netlify CMS) collections into TypeScript types!**
 
 <br />
 
-This package generates a [TypeScript](https://www.typescriptlang.org/) schema of your [Netlify CMS](https://www.netlifycms.org/) content collections to be consumed by frontend apps for better type support.
+This package generates a [TypeScript](https://www.typescriptlang.org/) schema of your [Decap CMS](https://decapcms.org/) (formerly Netlify CMS) content collections to be consumed by frontend apps for better type support.
 
 # Features
 
@@ -31,13 +31,13 @@ npm install -D netlify-ts
 
 ## CLI
 
-The main method of usage is through the command-line. Having installed the package either globally or in project's `devDependencies`, simply call `netlify-ts` with a parameter pointing to your Netlify CMS `config.yml` file.
+The main method of usage is through the command-line. Having installed the package either globally or in project's `devDependencies`, simply call `netlify-ts` with a parameter pointing to your Decap CMS (formerly Netlify CMS) `config.yml` file.
 
 ```bash
 npx netlify-ts path/to/config.yml
 ```
 
-This generates a `netlify-types.ts` file in the project root containing types for your Netlify CMS collections.
+This generates a `netlify-types.ts` file in the project root containing types for your Decap CMS (formerly Netlify CMS) collections.
 
 ### Custom output location
 
@@ -54,8 +54,8 @@ In case the CLI doesn't suit your workflow or you need to invoke the type genera
 ### Config file
 
 ```javascript
-const fs = require("fs");
-const createNetlifyTypes = require("netlify-ts");
+import fs from "node:fs";
+import createNetlifyTypes from "netlify-ts";
 
 const types = createNetlifyTypes("config.yml");
 fs.writeFileSync("cms-types.ts", types);
@@ -64,8 +64,8 @@ fs.writeFileSync("cms-types.ts", types);
 ### Config object
 
 ```javascript
-const fs = require("fs");
-const createNetlifyTypes = require("netlify-ts");
+import fs from "node:fs";
+import createNetlifyTypes from "netlify-ts";
 
 const cmsConfig = { collections: [ ... ] };
 
