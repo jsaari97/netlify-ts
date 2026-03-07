@@ -1,5 +1,5 @@
-import { DEFAULT_DELIMITER } from "../constants";
-import type { Widget } from "../types";
+import { DEFAULT_DELIMITER } from "../constants.js";
+import type { Widget } from "../types.js";
 
 export const getName = (name: string, capitalize: boolean, delimiter: string) =>
   toDelimiter(capitalize ? toCapitalized(name) : name, delimiter);

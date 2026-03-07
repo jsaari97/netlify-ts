@@ -1,7 +1,7 @@
-import { pullCollection } from "./collection";
-import { appendExport, formatType } from "./output";
-import { resolveRelations, resolveWidget, transformType } from "./widget";
-import type { NetlifyCMSConfig, NetlifyTsOptions } from "./types";
+import { pullCollection } from "./collection.js";
+import { appendExport, formatType } from "./output.js";
+import { resolveRelations, resolveWidget, transformType } from "./widget.js";
+import type { NetlifyCMSConfig, NetlifyTsOptions } from "./types.js";
 
 export const generateTypes = (config: NetlifyCMSConfig, options: NetlifyTsOptions = {}): string => {
   const externalMediaLibrary = hasExternalMediaLibrary(config);
@@ -22,7 +22,7 @@ export const generateTypes = (config: NetlifyCMSConfig, options: NetlifyTsOption
     .map(formatType)
     .map(appendExport)
     .join("\n\n")
-    .replace(/^/, "/* eslint-disable */\n/* tslint:disable */\n\n")
+    .replace(/^/, "/* eslint-disable */\n")
     .concat("\n");
 };
 

@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { OUTPUT_FILENAME } from "./constants";
+import { OUTPUT_FILENAME } from "./constants.js";
 
 const spacing = "  ";
 

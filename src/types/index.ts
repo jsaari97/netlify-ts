@@ -1,4 +1,4 @@
-export type { Field, Collection } from "./fields";
-export type { Widget } from "./widgets";
-export type { NetlifyTsOptions } from "./options";
-export type { NetlifyCMSConfig } from "./config";
+export type { Field, Collection } from "./fields.js";
+export type { Widget } from "./widgets.js";
+export type { NetlifyTsOptions } from "./options.js";
+export type { NetlifyCMSConfig } from "./config.js";

@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
 import fs from "fs";
 import path from "path";
-import type { NetlifyCMSConfig } from "./types";
+import type { NetlifyCMSConfig } from "./types.js";
 
 export const loadConfig = (config: string | NetlifyCMSConfig): NetlifyCMSConfig => {
   let data;

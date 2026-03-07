@@ -1,4 +1,4 @@
-import type { Collection, Field } from "./types";
+import type { Collection, Field } from "./types.js";
 
 export const pullCollection = (collection: Collection): Field[] => {
   const iterator = collection.files || [collection];

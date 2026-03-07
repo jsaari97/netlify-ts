@@ -1,11 +1,11 @@
-import { DEFAULT_DELIMITER } from "../constants";
+import { DEFAULT_DELIMITER } from "../constants.js";
 
 export const resolveRelations =
   ({ delimiter = DEFAULT_DELIMITER } = {}) =>
   (type: string, _i: number, typeArray: string[]): string => {
     return type.replace(/(~.*?)(;|\[)/g, (_s, match: string, closingChar: string) => {
       const resolveType = (relationType: string) => {
-        const [_, collectionName, fieldPath] = relationType.match(/^~(.*)\/(.*)/) ?? [];
+        const [, collectionName, fieldPath] = relationType.match(/^~(.*)\/(.*)/) ?? [];
 
         // if string template
         if (fieldPath.includes("{{")) {
@@ -23,7 +23,7 @@ export const resolveRelations =
           const slug = fieldSlugs[0];
 
           const fieldRegex = new RegExp(`\\s${slug}\\??:\\s(.*?);`);
-          const [__, relationType] = targetCollection?.match(fieldRegex) ?? ["", defaultValue];
+          const [, relationType] = targetCollection?.match(fieldRegex) ?? ["", defaultValue];
 
           if (relationType.match(/^~/)) {
             return resolveType(relationType);

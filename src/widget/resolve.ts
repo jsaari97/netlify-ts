@@ -1,4 +1,4 @@
-import type { Field, Widget } from "../types";
+import type { Field, Widget } from "../types.js";
 
 interface ResolveOptions {
   externalMediaLibrary?: boolean;

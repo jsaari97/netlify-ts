@@ -1,3 +1,3 @@
-export { resolveWidget } from "./resolve";
-export { transformType } from "./transform";
-export { resolveRelations } from "./relation";
+export { resolveWidget } from "./resolve.js";
+export { transformType } from "./transform.js";
+export { resolveRelations } from "./relation.js";
