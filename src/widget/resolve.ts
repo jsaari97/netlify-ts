@@ -35,7 +35,7 @@ export const resolveType = (field: Field, options: ResolveOptions = {}): Widget[
     case "file":
       return "string";
     case "number":
-      return field.value_type === "int" || field.value_type === "float" ? "number" : "string";
+      return "number";
     case "boolean":
       return "boolean";
     case "code":

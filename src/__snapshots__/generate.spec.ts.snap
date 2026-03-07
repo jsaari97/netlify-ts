@@ -14,7 +14,7 @@ export interface faq {
 }
 
 export interface general_posts {
-  front_limit: string;
+  front_limit: number;
   author: string;
   thumb?: string;
 }
@@ -46,7 +46,7 @@ export interface kitchenSink_object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -67,7 +67,7 @@ export interface kitchenSink_list_object_list_object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -81,7 +81,7 @@ export interface kitchenSink_list_object_list {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -96,7 +96,7 @@ export interface kitchenSink_list_object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -110,7 +110,7 @@ export interface kitchenSink_list {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -121,7 +121,7 @@ export interface kitchenSink_list {
 }
 
 export interface kitchenSink_typed_list_type_2_object_nested {
-  number: string;
+  number: number;
 }
 
 export type kitchenSink_typed_list_type_2_object_select_options = "a" | "b" | "c";
@@ -135,7 +135,7 @@ export interface kitchenSink_typed_list_type_1_object {
 
 export interface kitchenSink_typed_list_type_2_object {
   type: "type_2_object";
-  number: string;
+  number: number;
   nested: kitchenSink_typed_list_type_2_object_nested;
   select: kitchenSink_typed_list_type_2_object_select_options;
   datetime: string;
@@ -170,7 +170,7 @@ export interface kitchenSink {
   boolean: boolean;
   map: string;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -206,7 +206,7 @@ export interface FAQ {
 }
 
 export interface SiteSettings_PostSettings {
-  front_limit: string;
+  front_limit: number;
   author: string;
   thumb?: string;
 }
@@ -238,7 +238,7 @@ export interface KitchenSink_Object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -259,7 +259,7 @@ export interface KitchenSink_List_Object_List_Object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -273,7 +273,7 @@ export interface KitchenSink_List_Object_List {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -288,7 +288,7 @@ export interface KitchenSink_List_Object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -302,7 +302,7 @@ export interface KitchenSink_List {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -313,7 +313,7 @@ export interface KitchenSink_List {
 }
 
 export interface KitchenSink_TypedList_Type2Object_NestedObject {
-  number: string;
+  number: number;
 }
 
 export type KitchenSink_TypedList_Type2Object_Select_options = "a" | "b" | "c";
@@ -327,7 +327,7 @@ export interface KitchenSink_TypedList_Type1Object {
 
 export interface KitchenSink_TypedList_Type2Object {
   type: "type_2_object";
-  number: string;
+  number: number;
   nested: KitchenSink_TypedList_Type2Object_NestedObject;
   select: KitchenSink_TypedList_Type2Object_Select_options;
   datetime: string;
@@ -362,7 +362,7 @@ export interface KitchenSink {
   boolean: boolean;
   map: string;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -398,7 +398,7 @@ export interface Faq {
 }
 
 export interface General_Posts {
-  front_limit: string;
+  front_limit: number;
   author: string;
   thumb?: string;
 }
@@ -430,7 +430,7 @@ export interface KitchenSink_Object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -451,7 +451,7 @@ export interface KitchenSink_List_Object_List_Object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -465,7 +465,7 @@ export interface KitchenSink_List_Object_List {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -480,7 +480,7 @@ export interface KitchenSink_List_Object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -494,7 +494,7 @@ export interface KitchenSink_List {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -505,7 +505,7 @@ export interface KitchenSink_List {
 }
 
 export interface KitchenSink_Typed_List_Type_2_Object_Nested {
-  number: string;
+  number: number;
 }
 
 export type KitchenSink_Typed_List_Type_2_Object_Select_Options = "a" | "b" | "c";
@@ -519,7 +519,7 @@ export interface KitchenSink_Typed_List_Type_1_Object {
 
 export interface KitchenSink_Typed_List_Type_2_Object {
   type: "type_2_object";
-  number: string;
+  number: number;
   nested: KitchenSink_Typed_List_Type_2_Object_Nested;
   select: KitchenSink_Typed_List_Type_2_Object_Select_Options;
   datetime: string;
@@ -554,7 +554,7 @@ export interface KitchenSink {
   boolean: boolean;
   map: string;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -590,7 +590,7 @@ export interface faq {
 }
 
 export interface general-posts {
-  front_limit: string;
+  front_limit: number;
   author: string;
   thumb?: string;
 }
@@ -622,7 +622,7 @@ export interface kitchenSink-object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -643,7 +643,7 @@ export interface kitchenSink-list-object-list-object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -657,7 +657,7 @@ export interface kitchenSink-list-object-list {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -672,7 +672,7 @@ export interface kitchenSink-list-object {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -686,7 +686,7 @@ export interface kitchenSink-list {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -697,7 +697,7 @@ export interface kitchenSink-list {
 }
 
 export interface kitchenSink-typed-list-type-2-object-nested {
-  number: string;
+  number: number;
 }
 
 export type kitchenSink-typed-list-type-2-object-select-options = "a" | "b" | "c";
@@ -711,7 +711,7 @@ export interface kitchenSink-typed-list-type-1-object {
 
 export interface kitchenSink-typed-list-type-2-object {
   type: "type_2_object";
-  number: string;
+  number: number;
   nested: kitchenSink-typed-list-type-2-object-nested;
   select: kitchenSink-typed-list-type-2-object-select-options;
   datetime: string;
@@ -746,7 +746,7 @@ export interface kitchenSink {
   boolean: boolean;
   map: string;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -782,7 +782,7 @@ export interface FAQ {
 }
 
 export interface SiteSettingsPostSettings {
-  front_limit: string;
+  front_limit: number;
   author: string;
   thumb?: string;
 }
@@ -814,7 +814,7 @@ export interface KitchenSinkObject {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -835,7 +835,7 @@ export interface KitchenSinkListObjectListObject {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -849,7 +849,7 @@ export interface KitchenSinkListObjectList {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -864,7 +864,7 @@ export interface KitchenSinkListObject {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -878,7 +878,7 @@ export interface KitchenSinkList {
   string: string;
   boolean: boolean;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;
@@ -889,7 +889,7 @@ export interface KitchenSinkList {
 }
 
 export interface KitchenSinkTypedListType2ObjectNestedObject {
-  number: string;
+  number: number;
 }
 
 export type KitchenSinkTypedListType2ObjectSelectOptions = "a" | "b" | "c";
@@ -903,7 +903,7 @@ export interface KitchenSinkTypedListType1Object {
 
 export interface KitchenSinkTypedListType2Object {
   type: "type_2_object";
-  number: string;
+  number: number;
   nested: KitchenSinkTypedListType2ObjectNestedObject;
   select: KitchenSinkTypedListType2ObjectSelectOptions;
   datetime: string;
@@ -938,7 +938,7 @@ export interface KitchenSink {
   boolean: boolean;
   map: string;
   text: string;
-  number: string;
+  number: number;
   markdown: string;
   datetime: string;
   date: string;

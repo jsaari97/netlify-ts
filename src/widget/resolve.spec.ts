@@ -83,8 +83,8 @@ describe("Resolve widget type", () => {
   });
 
   describe("number", () => {
-    it("should return string if no value_type", () => {
-      expect(resolveType({ name: "name", widget: "number" })).toEqual("string");
+    it("should return number if no value_type", () => {
+      expect(resolveType({ name: "name", widget: "number" })).toEqual("number");
     });
 
     it("should return number if value_type is int or float", () => {
@@ -94,10 +94,10 @@ describe("Resolve widget type", () => {
       );
     });
 
-    it("should return string if value_type is invalid", () => {
+    it("should return number if value_type is invalid", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect(resolveType({ name: "name", widget: "number", value_type: "number" as any })).toEqual(
-        "string",
+        "number",
       );
     });
   });
