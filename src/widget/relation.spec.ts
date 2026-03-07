@@ -1,4 +1,4 @@
-import { resolveRelations } from "./relation";
+import { resolveRelations } from "./relation.js";
 
 describe("resolveRelation", () => {
   const types = [
@@ -104,5 +104,11 @@ describe("resolveRelation", () => {
     expect(input.map(resolveRelations({ delimiter: "-" }))[input.length - 1]).toEqual(
       "interface posts { author__location: authors-location; }",
     );
+  });
+
+  it("should throw for malformed relation references", () => {
+    const input = [...types, "interface posts { title: string; author: ~authors; }"];
+
+    expect(() => input.map(resolveRelations())).toThrow();
   });
 });

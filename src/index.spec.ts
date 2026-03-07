@@ -1,4 +1,4 @@
-import createNetlifyTypes from "./index";
+import createNetlifyTypes from "./index.js";
 
 describe("Program API", () => {
   describe("Synchronous", () => {

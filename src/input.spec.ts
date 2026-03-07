@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
 import fs from "fs";
-import { loadConfig } from "./input";
-import type { NetlifyCMSConfig } from "./types";
+import { loadConfig } from "./input.js";
+import type { NetlifyCMSConfig } from "./types.js";
 
 const mockConfigObject = yaml.load(
   fs.readFileSync("kitchen-sink.yml", "utf-8"),

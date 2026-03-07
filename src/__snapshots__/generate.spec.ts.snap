@@ -1,9 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Output testing should parse kitchen sink correctly 1`] = `
 "/* eslint-disable */
-/* tslint:disable */
-
 export interface posts {
   title: string;
   draft: boolean;
@@ -196,8 +194,6 @@ export interface kitchenSink {
 
 exports[`Output testing should parse kitchen sink with label option 1`] = `
 "/* eslint-disable */
-/* tslint:disable */
-
 export interface Post {
   title: string;
   draft: boolean;
@@ -390,8 +386,6 @@ export interface KitchenSink {
 
 exports[`Output testing should support capitalization of type names 1`] = `
 "/* eslint-disable */
-/* tslint:disable */
-
 export interface Posts {
   title: string;
   draft: boolean;
@@ -584,8 +578,6 @@ export interface KitchenSink {
 
 exports[`Output testing should support custom delimiter for type names 1`] = `
 "/* eslint-disable */
-/* tslint:disable */
-
 export interface posts {
   title: string;
   draft: boolean;
@@ -778,8 +770,6 @@ export interface kitchenSink {
 
 exports[`Output testing should support label, capitalization and delimiter at the same time 1`] = `
 "/* eslint-disable */
-/* tslint:disable */
-
 export interface Post {
   title: string;
   draft: boolean;

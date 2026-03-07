@@ -1,4 +1,4 @@
-import { resolveWidget, resolveType } from "./resolve";
+import { resolveWidget, resolveType } from "./resolve.js";
 
 describe("Resolve widget shape", () => {
   describe("multiple property", () => {

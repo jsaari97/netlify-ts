@@ -1,5 +1,5 @@
-import { loadConfig } from "./input";
-import { generateTypes, hasExternalMediaLibrary } from "./generate";
+import { loadConfig } from "./input.js";
+import { generateTypes, hasExternalMediaLibrary } from "./generate.js";
 
 describe("Output testing", () => {
   it("should parse kitchen sink correctly", () => {

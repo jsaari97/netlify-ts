@@ -1,4 +1,4 @@
-import type { Widget } from "../types";
+import type { Widget } from "../types.js";
 import {
   nestedDepth,
   transformType,
@@ -9,7 +9,7 @@ import {
   toCapitalized,
   toCamelCase,
   toDelimiter,
-} from "./transform";
+} from "./transform.js";
 
 describe("Widget transformation", () => {
   const parse = (widget: Widget, state?: TransformState) => transformType(state)([[], []], widget);

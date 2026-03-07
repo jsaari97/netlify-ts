@@ -1,4 +1,4 @@
-import { pullCollection } from "./collection";
+import { pullCollection } from "./collection.js";
 
 describe("Pull collection", () => {
   it("should support file collections", () => {
