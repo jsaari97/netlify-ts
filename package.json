@@ -21,9 +21,6 @@
     "types",
     "generate"
   ],
-  "engines": {
-    "node": ">=20"
-  },
   "license": "MIT",
   "bin": "./bin/run.js",
   "files": [
@@ -46,6 +43,7 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.0",
+    "@types/node": "^24.12.4",
     "@types/yargs": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
@@ -53,11 +51,11 @@
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
-    "lint-staged": "^16.3.2",
+    "lint-staged": "^17.0.6",
     "prettier": "^3.8.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "husky": {
     "hooks": {
