@@ -108,11 +108,6 @@ export const transformType =
     const name = getName(prefix ? `${prefix}_${widgetName}` : widgetName, capitalize, delimiter);
 
     if (!Array.isArray(widget.type)) {
-      // if widget name is `body`
-      if (widget.name === "body") {
-        return types;
-      }
-
       // if widget is a primitive
       if (typeof widget.type === "string") {
         const optional = widget.type.includes("?") ? "?" : "";
